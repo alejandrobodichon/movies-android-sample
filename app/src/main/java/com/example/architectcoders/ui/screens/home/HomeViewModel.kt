@@ -6,10 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.architectcoders.data.Movie
+import com.example.architectcoders.data.RemoteMovie
 import com.example.architectcoders.data.MoviesRepository
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class HomeViewModel: ViewModel(){
@@ -19,28 +17,17 @@ class HomeViewModel: ViewModel(){
 
     private val repository = MoviesRepository()
 
-    fun onUiReady(){
+    fun onUiReady(region: String) {
         viewModelScope.launch {
-            repository.fetchPopularMovies()
+            val movies = repository.fetchPopularMovies(region)
+            state = state.copy(movies = movies, loading = false)
         }
     }
 
-
-
-
-
-
-
     data class UiState(
-        val loading: Boolean = false,
+        val loading: Boolean = true,
         val movies: List<Movie> = emptyList()
     )
 
-    private val _movies = MutableStateFlow<List<Movie>>(emptyList())
-    val movies: StateFlow<List<Movie>> = _movies
-
-    fun getMovies(){
-
-    }
 
 }

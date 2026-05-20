@@ -5,14 +5,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.architectcoders.ui.screens.detail.DetailScreen
+import com.example.architectcoders.ui.screens.detail.DetailViewModel
 import com.example.architectcoders.ui.screens.home.HomeScreen
-import com.example.architectcoders.data.movies
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -33,8 +34,9 @@ class MainActivity : ComponentActivity() {
                 composable("detail/{movieId}", arguments = listOf(navArgument("movieId"){
                     type = NavType.IntType
                 })){ backstackEntry ->
+                    val movieId = requireNotNull(backstackEntry.arguments?.getInt("movieId"))
                     DetailScreen(
-                        movie = movies.first{ it.id == backstackEntry.arguments?.getInt("movieId") },
+                        vm = viewModel { DetailViewModel(movieId)},
                         onBack = { navController.popBackStack() }
                     )
                 }

@@ -39,16 +39,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.architectcoders.R
+import com.example.architectcoders.data.Movie
 import com.example.architectcoders.ui.common.PermissionRequestEffect
 import com.example.architectcoders.ui.common.getRegion
 import com.example.architectcoders.ui.theme.ArchitectCodersTheme
-import com.example.architectcoders.data.Movie
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(onClick: (Movie) -> Unit,
-               vm: HomeViewModel = viewModel()) {
+fun HomeScreen(
+    onClick: (Movie) -> Unit,
+    vm: HomeViewModel = viewModel()
+) {
     val appName = stringResource(R.string.app_name)
     var appBarTitle by remember { mutableStateOf(appName) }
     val context = LocalContext.current
@@ -56,14 +58,18 @@ fun HomeScreen(onClick: (Movie) -> Unit,
     val state = vm.state
 
     PermissionRequestEffect(permission = Manifest.permission.ACCESS_COARSE_LOCATION) { granted ->
-        if(granted){
-            coroutineScope.launch {
-                appBarTitle = "$appName (${context.getRegion()})"
+        coroutineScope.launch {
+            lateinit var region: String
+            if (granted) {
+                region = context.getRegion()
+                appBarTitle = "$appName ($region)"
+
+            } else {
+                region = "DD"
+                appBarTitle = appName + "permission denied"
             }
-        } else {
-            appBarTitle = appName + "permission denied"
+            vm.onUiReady(region)
         }
-        vm.onUiReady()
     }
 
     Screen {
@@ -77,33 +83,45 @@ fun HomeScreen(onClick: (Movie) -> Unit,
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
         { contentPadding ->
-            if (state.loading) {
-                Box(Modifier.fillMaxSize()
-                    .padding(contentPadding),
-                    contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
+            LoadingProgressIndicator(modifier =
+                Modifier
+                .fillMaxSize()
+                .padding(contentPadding),
+                isLoading = state.loading
+            )
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(120.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    contentPadding = contentPadding
+                ) {
+                    items(state.movies) {
+                        MovieItem(movie = it, onClick = onClick)
+                    }
                 }
-            } else {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(120.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                contentPadding = contentPadding
-            ) {
-                items(state.movies) {
-                    MovieItem(movie = it, onClick = onClick)
-                }
-            }
-            }
+
+        }
+    }
+}
+
+@Composable
+fun LoadingProgressIndicator(modifier: Modifier, isLoading: Boolean) {
+    if (isLoading) {
+        Box(
+            modifier,
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
         }
     }
 }
 
 @Composable
 fun MovieItem(movie: Movie, onClick: (Movie) -> Unit) {
-    Column(modifier = Modifier
-        .clickable { onClick(movie) }
-            ){
+    Column(
+        modifier = Modifier
+            .clickable { onClick(movie) }
+    ) {
         AsyncImage(
             model = movie.poster,
             contentDescription = movie.title,
