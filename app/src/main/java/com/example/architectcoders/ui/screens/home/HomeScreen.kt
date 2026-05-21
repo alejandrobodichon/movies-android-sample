@@ -16,11 +16,11 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,7 +42,7 @@ import com.example.architectcoders.R
 import com.example.architectcoders.data.Movie
 import com.example.architectcoders.ui.common.PermissionRequestEffect
 import com.example.architectcoders.ui.common.getRegion
-import com.example.architectcoders.ui.theme.ArchitectCodersTheme
+import com.example.architectcoders.ui.screens.Screen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,7 +55,7 @@ fun HomeScreen(
     var appBarTitle by remember { mutableStateOf(appName) }
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val state = vm.state
+    val state by vm.state.collectAsState()
 
     PermissionRequestEffect(permission = Manifest.permission.ACCESS_COARSE_LOCATION) { granted ->
         coroutineScope.launch {
@@ -83,22 +83,23 @@ fun HomeScreen(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
         { contentPadding ->
-            LoadingProgressIndicator(modifier =
-                Modifier
-                .fillMaxSize()
-                .padding(contentPadding),
+            LoadingProgressIndicator(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(contentPadding),
                 isLoading = state.loading
             )
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(120.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    contentPadding = contentPadding
-                ) {
-                    items(state.movies) {
-                        MovieItem(movie = it, onClick = onClick)
-                    }
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(120.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                contentPadding = contentPadding
+            ) {
+                items(state.movies) {
+                    MovieItem(movie = it, onClick = onClick)
                 }
+            }
 
         }
     }
@@ -149,14 +150,3 @@ fun HomePreview() {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Screen(content: @Composable () -> Unit) {
-    ArchitectCodersTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background,
-            content = content
-        )
-    }
-}

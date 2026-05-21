@@ -1,26 +1,25 @@
 package com.example.architectcoders.ui.screens.detail
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.architectcoders.data.Movie
 import com.example.architectcoders.data.MoviesRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class DetailViewModel(val id: Int): ViewModel() {
 
-    var state by mutableStateOf(UiState())
-        private set
+    private val _state = MutableStateFlow(UiState())
+    val state: StateFlow<UiState> = _state.asStateFlow()
 
     private val repository = MoviesRepository()
 
     init {
         viewModelScope.launch {
-            state = state.copy(loading = true)
-            val movie = repository.findMovieById(id)
-            state = state.copy(movie = movie, loading = false)
+            _state.value = UiState(loading = true)
+            _state.value = UiState(movie = repository.findMovieById(id), loading = false)
         }
     }
 

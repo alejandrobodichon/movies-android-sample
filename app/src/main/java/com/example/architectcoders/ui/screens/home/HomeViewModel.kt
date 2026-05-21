@@ -1,26 +1,25 @@
 package com.example.architectcoders.ui.screens.home
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.architectcoders.data.Movie
-import com.example.architectcoders.data.RemoteMovie
 import com.example.architectcoders.data.MoviesRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class HomeViewModel: ViewModel(){
 
-    var state by mutableStateOf(UiState())
-    private set
+    private val _state = MutableStateFlow(UiState())
+    val state: StateFlow<UiState> = _state.asStateFlow()
 
     private val repository = MoviesRepository()
 
     fun onUiReady(region: String) {
         viewModelScope.launch {
-            val movies = repository.fetchPopularMovies(region)
-            state = state.copy(movies = movies, loading = false)
+            _state.value = UiState(loading = true)
+            _state.value = UiState(movies = repository.fetchPopularMovies(region), loading = false)
         }
     }
 
