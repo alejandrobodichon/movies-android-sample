@@ -15,7 +15,7 @@ data class RemoteResult(
 data class RemoteMovie(
     val adult: Boolean,
     @SerialName("backdrop_path")
-    val backdropPath: String,
+    val backdropPath: String?,
     @SerialName("genre_ids")
     val genreIds: List<Int>? = null,
     val id: Int,
@@ -26,5 +26,8 @@ data class RemoteMovie(
     @SerialName("release_date")
     val releaseDate: String,
     val title: String,
+    @SerialName("original_title") val originalTitle: String,
+    @SerialName("original_language") val originalLanguage: String,
+    @SerialName("vote_average") val voteAverage: Double,
 
 )
