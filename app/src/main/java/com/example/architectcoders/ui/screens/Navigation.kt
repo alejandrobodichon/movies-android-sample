@@ -2,49 +2,31 @@ package com.example.architectcoders.ui.screens
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.example.architectcoders.ui.screens.detail.DetailScreen
 import com.example.architectcoders.ui.screens.detail.DetailViewModel
 import com.example.architectcoders.ui.screens.home.HomeScreen
 import kotlinx.serialization.Serializable
-
-sealed class NavScreen(val route: String){
-    data object Home: NavScreen("home")
-    data object Detail: NavScreen("detail/{${NavArgs.MovieId.key}}"){
-        fun createRoute(movieId: Int) = "detail/$movieId"
-    }
-}
-
-enum class NavArgs(val key: String){
-    MovieId("movieId")
-}
 
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = NavScreen.Home.route
+        startDestination = HomeRoute
     ) {
-        composable(NavScreen.Home.route) {
+        composable<HomeRoute> {
             HomeScreen(onClick = { movie ->
-                navController.navigate(NavScreen.Detail.createRoute(movie.id))
+                navController.navigate(MovieDetailRoute(movie.id))
             })
         }
-        composable<Int>{
-
-        }
-
-        composable(NavScreen.Detail.route, arguments = listOf(navArgument(NavArgs.MovieId.key) {
-            type = NavType.IntType
-        })) { backstackEntry ->
-            val movieId = requireNotNull(backstackEntry.arguments?.getInt(NavArgs.MovieId.key))
+        composable<MovieDetailRoute> { backStackEntry ->
+            val route = backStackEntry.toRoute<MovieDetailRoute>()
             DetailScreen(
-                vm = viewModel { DetailViewModel(movieId) },
+                vm = viewModel { DetailViewModel(route.movieId) },
                 onBack = { navController.popBackStack() }
             )
         }
@@ -52,10 +34,8 @@ fun Navigation() {
 }
 
 
-// ruta sin argumentos
 @Serializable
-object HomeRoute
+data object HomeRoute
 
-// ruta con argumentos
 @Serializable
 data class MovieDetailRoute(val movieId: Int)
