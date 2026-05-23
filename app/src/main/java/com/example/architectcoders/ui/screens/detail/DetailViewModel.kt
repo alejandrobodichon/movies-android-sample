@@ -24,9 +24,6 @@ class DetailViewModel(val id: Int) : ViewModel() {
         data class ShowMessage(val message: String) : UiEvent
     }
 
-    private val _events = Channel<UiEvent?>()
-    val events: Flow<UiEvent?> = _events.receiveAsFlow()
-
     init {
         viewModelScope.launch {
             _state.value = UiState(loading = true)
@@ -39,14 +36,21 @@ class DetailViewModel(val id: Int) : ViewModel() {
             currentState.copy(
                 movie = currentState.movie?.copy(
                     favorite = !currentState.movie.favorite
-                )
+                ),
+                message = "Movie favorite updated"
             )
         }
-        _events.trySend(UiEvent.ShowMessage("Favorite clicked"))
+    }
+
+    fun onMessageShown() {
+        _state.update { currentState ->
+            currentState.copy(message = null)
+        }
     }
 
     data class UiState(
         val loading: Boolean = true,
-        val movie: Movie? = null
+        val movie: Movie? = null,
+        val message: String? = null
     )
 }

@@ -42,9 +42,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.AsyncImage
 import com.example.architectcoders.data.Movie
 import com.example.architectcoders.ui.screens.home.LoadingProgressIndicator
@@ -55,25 +52,14 @@ import com.example.architectcoders.ui.screens.Screen
 @Composable
 fun DetailScreen(vm: DetailViewModel, onBack: () -> Unit) {
     val state by vm.state.collectAsState()
-    val lifecycle = LocalLifecycleOwner.current
-    val snackBarHostState = remember { SnackbarHostState() }
+    val detailState = rememberDetailState()
 
-    LaunchedEffect(vm, lifecycle) {
-        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            vm.events.collect { event ->
-                when (event) {
-                    is DetailViewModel.UiEvent.ShowMessage -> {
-                        snackBarHostState.currentSnackbarData?.dismiss()
-                        snackBarHostState.showSnackbar(event.message)
-                    }
-                    null -> {}
-                }
-            }
-        }
+    detailState.ShowMessageEffect(state.message) {
+        vm.onMessageShown()
     }
 
     Screen {
-        val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+        val scrollBehavior = detailState.scrollBehavior
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -97,7 +83,7 @@ fun DetailScreen(vm: DetailViewModel, onBack: () -> Unit) {
                 }
             },
             snackbarHost = {
-                SnackbarHost(hostState = snackBarHostState)
+                SnackbarHost(hostState = detailState.snackBarHostState)
             },
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )

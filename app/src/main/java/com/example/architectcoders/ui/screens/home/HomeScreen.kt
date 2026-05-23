@@ -53,34 +53,22 @@ fun HomeScreen(
 ) {
     val appName = stringResource(R.string.app_name)
     var appBarTitle by remember { mutableStateOf(appName) }
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
+    val homeState = rememberHomeState()
     val state by vm.state.collectAsState()
 
-    PermissionRequestEffect(permission = Manifest.permission.ACCESS_COARSE_LOCATION) { granted ->
-        coroutineScope.launch {
-            lateinit var region: String
-            if (granted) {
-                region = context.getRegion()
-                appBarTitle = "$appName ($region)"
-
-            } else {
-                region = "DD"
-                appBarTitle = appName + "permission denied"
-            }
-            vm.onUiReady(region)
-        }
+    homeState.AskRegionEffect { region ->
+        appBarTitle = "$appName ($region)"
+        vm.onUiReady(region)
     }
 
     Screen {
-        val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
         Scaffold(
             topBar = {
                 TopAppBar({
                     Text(appBarTitle)
-                }, scrollBehavior = scrollBehavior)
+                }, scrollBehavior = homeState.scrollBehavior)
             },
-            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+            modifier = Modifier.nestedScroll(homeState.scrollBehavior.nestedScrollConnection)
         )
         { contentPadding ->
             LoadingProgressIndicator(
