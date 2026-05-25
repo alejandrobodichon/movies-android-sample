@@ -1,10 +1,14 @@
 package com.example.architectcoders.data
 
-class MoviesRepository(private val moviesService: MoviesService = MoviesClient.instance) {
+class MoviesRepository(
+    private val moviesService: MoviesService = MoviesClient.instance,
+    private val regionRepository: RegionRepository) {
 
-    suspend fun fetchPopularMovies(region: String): List<Movie> {
+
+
+    suspend fun fetchPopularMovies(): List<Movie> {
         val movies = moviesService
-            .getPopularMovies(region)
+            .getPopularMovies(regionRepository.findLastRegion())
             .results
             .map{it.toDomainModel()}
         return movies
