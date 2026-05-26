@@ -11,26 +11,12 @@ import androidx.compose.runtime.remember
 @OptIn(ExperimentalMaterial3Api::class)
 class DetailState(
     val scrollBehavior: TopAppBarScrollBehavior,
-    val snackBarHostState: SnackbarHostState
-) {
-    @Composable
-    fun ShowMessageEffect(message: String?, onMessageShown: () -> Unit) {
-        LaunchedEffect(message) {
-            message?.let {
-                snackBarHostState.currentSnackbarData?.dismiss()
-                snackBarHostState.showSnackbar(message)
-                onMessageShown()
-            }
-        }
-    }
-
-}
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun rememberDetailState(
-    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
+    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 ): DetailState {
-    return remember { DetailState(scrollBehavior, snackbarHostState) }
+    return remember { DetailState(scrollBehavior) }
 }

@@ -1,4 +1,4 @@
-package com.example.architectcoders.data
+package com.example.architectcoders.data.datasource
 
 import android.app.Application
 import android.location.Geocoder
@@ -7,7 +7,7 @@ import com.example.architectcoders.ui.common.getFromLocationCompat
 
 class RegionDataSource(
     app: Application,
-    val locationDataSource: LocationDataSource
+    private val locationDataSource: LocationDataSource
 ) {
     private val geocoder = Geocoder(app)
 

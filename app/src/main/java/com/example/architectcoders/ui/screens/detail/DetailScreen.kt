@@ -18,7 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -49,10 +48,6 @@ fun DetailScreen(vm: DetailViewModel, onBack: () -> Unit) {
     val state by vm.state.collectAsState()
     val detailState = rememberDetailState()
 
-    detailState.ShowMessageEffect(state.message) {
-        vm.onMessageShown()
-    }
-
     Screen {
         val scrollBehavior = detailState.scrollBehavior
         Scaffold(
@@ -76,9 +71,6 @@ fun DetailScreen(vm: DetailViewModel, onBack: () -> Unit) {
                         contentDescription = null
                     )
                 }
-            },
-            snackbarHost = {
-                SnackbarHost(hostState = detailState.snackBarHostState)
             },
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )

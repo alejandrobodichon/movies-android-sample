@@ -36,12 +36,6 @@ class DetailViewModel(
         }
     }
 
-    fun onMessageShown() {
-        _state.update { currentState ->
-            currentState.copy(message = null)
-        }
-    }
-
     data class UiState(
         val loading: Boolean = true,
         val movie: Movie? = null,

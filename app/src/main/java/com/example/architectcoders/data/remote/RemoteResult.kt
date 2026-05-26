@@ -1,5 +1,6 @@
-package com.example.architectcoders.data
+package com.example.architectcoders.data.remote
 
+import com.example.architectcoders.data.database.MovieLocal
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -29,5 +30,4 @@ data class RemoteMovie(
     @SerialName("original_title") val originalTitle: String,
     @SerialName("original_language") val originalLanguage: String,
     @SerialName("vote_average") val voteAverage: Double,
-
 )
