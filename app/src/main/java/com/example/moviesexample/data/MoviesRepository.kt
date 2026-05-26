@@ -1,10 +1,13 @@
 package com.example.moviesexample.data
 
+import androidx.lifecycle.viewModelScope
 import com.example.moviesexample.data.database.MovieLocal
 import com.example.moviesexample.data.datasource.MoviesLocalDataSource
 import com.example.moviesexample.data.datasource.MoviesRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class MoviesRepository(
     private val remoteDataSource: MoviesRemoteDataSource,
@@ -30,11 +33,11 @@ class MoviesRepository(
             }
         }
 
-
-    suspend fun updateMovie(movie: Movie?) {
-        movie?.let { movie ->
-            localDataSource.saveMovies(listOf(movie.toLocalModel()))
-        }
+    suspend fun toggleFavorite(movie: Movie) {
+        localDataSource.saveMovies(listOf(
+            movie.copy(favorite = !movie.favorite).toLocalModel())
+        )
     }
+
 }
 

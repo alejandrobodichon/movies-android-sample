@@ -28,15 +28,10 @@ class DetailViewModel(
     }
 
     fun onFavoriteClick() {
-        _state.update { currentState ->
-            currentState.copy(
-                movie = currentState.movie?.copy(
-                    favorite = !currentState.movie.favorite
-                ),
-            )
-        }
-        viewModelScope.launch {
-            repository.updateMovie(_state.value.movie)
+        _state.value.movie?.let {
+            viewModelScope.launch {
+                repository.toggleFavorite(it)
+            }
         }
     }
 
