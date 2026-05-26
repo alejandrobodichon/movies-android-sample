@@ -10,11 +10,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.architectcoders"
+    namespace = "com.example.moviesexample"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.architectcoders"
+        applicationId = "com.example.moviesexample"
         minSdk = 28
         targetSdk = 36
         versionCode = 1
