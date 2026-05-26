@@ -21,7 +21,9 @@ class DetailViewModel(
     init {
         viewModelScope.launch {
             _state.value = UiState(loading = true)
-            _state.value = UiState(movie = repository.findMovieById(id), loading = false)
+            repository.findMovieById(id).collect { movie ->
+                _state.value = UiState(movie = movie, loading = false)
+            }
         }
     }
 
@@ -31,14 +33,15 @@ class DetailViewModel(
                 movie = currentState.movie?.copy(
                     favorite = !currentState.movie.favorite
                 ),
-                message = "Movie favorite updated"
             )
+        }
+        viewModelScope.launch {
+            repository.updateMovie(_state.value.movie)
         }
     }
 
     data class UiState(
         val loading: Boolean = true,
         val movie: Movie? = null,
-        val message: String? = null
     )
 }
