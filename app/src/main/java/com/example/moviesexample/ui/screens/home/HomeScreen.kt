@@ -125,7 +125,7 @@ fun MovieItem(movie: Movie, onClick: (Movie) -> Unit) {
                     .align(Alignment.TopEnd)
                     .padding(8.dp)
                     .size(14.dp),
-                tint = Color.White,
+                tint = MaterialTheme.colorScheme.inverseOnSurface,
                 imageVector =
                     if (movie.favorite)
                         Icons.Default.Favorite
