@@ -38,8 +38,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.moviesexample.data.Movie
-import com.example.moviesexample.ui.screens.home.LoadingProgressIndicator
+import com.example.moviesexample.ui.common.MeScaffold
 import com.example.moviesexample.ui.screens.Screen
+import com.example.moviesexample.Result
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,10 +51,11 @@ fun DetailScreen(vm: DetailViewModel, onBack: () -> Unit) {
 
     Screen {
         val scrollBehavior = detailState.scrollBehavior
-        Scaffold(
+        MeScaffold(
+            state = state,
             topBar = {
                 TopAppBar(
-                    title = { Text(state.movie?.title ?: "") },
+                    title = { Text((state as? Result.Success)?.data?.title ?: "") },
                     navigationIcon = {
                         IconButton(onClick = onBack){
                             Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
@@ -64,7 +66,7 @@ fun DetailScreen(vm: DetailViewModel, onBack: () -> Unit) {
             floatingActionButton = {
                 FloatingActionButton(onClick = vm::onFavoriteClick) {
                     Icon(imageVector =
-                        if(state.movie?.favorite == true)
+                        if((state as? Result.Success)?.data?.favorite == true)
                             Icons.Default.Favorite
                         else
                             Icons.Default.FavoriteBorder,
@@ -74,17 +76,10 @@ fun DetailScreen(vm: DetailViewModel, onBack: () -> Unit) {
             },
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
-        { contentPadding ->
-            LoadingProgressIndicator(modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(contentPadding),
-                isLoading = state.loading
-            )
-            state.movie?.let { movie ->
-                MovieDetail(modifier = Modifier.padding(contentPadding) ,
-                    movie)
-            }
+        { contentPadding, movie ->
+            MovieDetail(modifier = Modifier.padding(contentPadding),
+                movie = movie)
+
         }
     }
 }

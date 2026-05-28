@@ -32,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -43,6 +42,7 @@ import com.example.moviesexample.R
 import com.example.moviesexample.data.Movie
 import com.example.moviesexample.ui.common.PermissionRequestEffect
 import com.example.moviesexample.ui.screens.Screen
+import com.example.moviesexample.ui.common.MeScaffold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,45 +60,25 @@ fun HomeScreen(
     }
 
     Screen {
-        Scaffold(
+        MeScaffold(
+            state = state,
             topBar = {
                 TopAppBar({
                     Text(appBarTitle)
                 }, scrollBehavior = homeState.scrollBehavior)
             },
             modifier = Modifier.nestedScroll(homeState.scrollBehavior.nestedScrollConnection)
-        )
-        { contentPadding ->
-            LoadingProgressIndicator(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(contentPadding),
-                isLoading = state.loading
-            )
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(120.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                contentPadding = contentPadding
-            ) {
-                items(state.movies) {
-                    MovieItem(movie = it, onClick = onClick)
+        ) { contentPadding, movies ->
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(120.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    contentPadding = contentPadding
+                ) {
+                    items(items = movies) {
+                        MovieItem(movie = it, onClick = onClick)
+                    }
                 }
-            }
-
-        }
-    }
-}
-
-@Composable
-fun LoadingProgressIndicator(modifier: Modifier, isLoading: Boolean) {
-    if (isLoading) {
-        Box(
-            modifier,
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
         }
     }
 }

@@ -3,6 +3,7 @@ package com.example.moviesexample.data
 import com.example.moviesexample.data.datasource.MoviesLocalDataSource
 import com.example.moviesexample.data.datasource.MoviesRemoteDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlin.collections.map
@@ -20,13 +21,14 @@ class MoviesRepository(
         }
     }.map { localMovies -> localMovies.map { it.toDomainMovie() } }
 
-    fun findMovieById(id: Int): Flow<Movie?> =
+    fun findMovieById(id: Int): Flow<Movie> =
         localDataSource.findMovieById(id).onEach { localMovie ->
             if (localMovie == null) {
                 val movie = remoteDataSource.findMovieById(id)
                 localDataSource.saveMovies(listOf(movie.toLocalModel()))
             }
-        }.map { localMovie -> localMovie?.toDomainMovie() }
+        }.filterNotNull()
+            .map { localMovie -> localMovie.toDomainMovie() }
 
     suspend fun toggleFavorite(movie: Movie) {
         localDataSource.saveMovies(listOf(

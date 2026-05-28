@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Android Movie</string>
+    <string name="error">Se produjo un error al querer cargar la pantalla</string>
 </resources>
