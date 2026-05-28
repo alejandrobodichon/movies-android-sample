@@ -4,8 +4,9 @@ import android.app.Application
 import android.location.Geocoder
 import android.location.Location
 import com.example.moviesexample.ui.common.getFromLocationCompat
+import javax.inject.Inject
 
-class RegionDataSource(
+class RegionDataSource @Inject constructor(
     app: Application,
     private val locationDataSource: LocationDataSource
 ) {

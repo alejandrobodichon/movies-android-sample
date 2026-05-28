@@ -8,13 +8,17 @@ import com.example.moviesexample.stateAsResultIn
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.example.moviesexample.Result
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.serialization.Serializable
+import javax.inject.Inject
 
-class DetailViewModel(
-    id: Int,
+@HiltViewModel
+class DetailViewModel @Inject constructor(
+    movieId: Int,
     private val repository: MoviesRepository
 ) : ViewModel() {
 
-    val state: StateFlow<Result<Movie>> = repository.findMovieById(id)
+    val state: StateFlow<Result<Movie>> = repository.findMovieById(movieId)
         .stateAsResultIn(scope = viewModelScope)
 
     fun onFavoriteClick() {

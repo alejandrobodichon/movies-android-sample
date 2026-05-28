@@ -9,11 +9,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import com.example.moviesexample.Result
 import com.example.moviesexample.stateAsResultIn
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
+import javax.inject.Inject
 
-
-class HomeViewModel(repository: MoviesRepository): ViewModel(){
+@HiltViewModel
+class HomeViewModel @Inject constructor(repository: MoviesRepository): ViewModel(){
 
     private var uiReady = MutableStateFlow(false)
 

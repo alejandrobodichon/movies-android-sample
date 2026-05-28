@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.moviesexample.data.Movie
 import com.example.moviesexample.ui.common.MeScaffold
@@ -45,7 +46,10 @@ import com.example.moviesexample.Result
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreen(vm: DetailViewModel, onBack: () -> Unit) {
+fun DetailScreen(
+    vm: DetailViewModel = hiltViewModel(),
+    onBack: () -> Unit
+) {
     val state by vm.state.collectAsState()
     val detailState = rememberDetailState()
 

@@ -4,9 +4,10 @@ import com.example.moviesexample.data.Movie
 import com.example.moviesexample.data.remote.MoviesClient
 import com.example.moviesexample.data.remote.MoviesService
 import com.example.moviesexample.data.remote.RemoteMovie
+import javax.inject.Inject
 
-class MoviesRemoteDataSource(
-    private val moviesService: MoviesService = MoviesClient.instance) {
+class MoviesRemoteDataSource @Inject constructor(
+    private val moviesService: MoviesService) {
 
     suspend fun fetchPopularMovies(findLastRegion: String): List<Movie> {
         val movies = moviesService

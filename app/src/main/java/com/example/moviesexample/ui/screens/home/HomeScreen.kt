@@ -37,18 +37,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.moviesexample.R
 import com.example.moviesexample.data.Movie
 import com.example.moviesexample.ui.common.PermissionRequestEffect
 import com.example.moviesexample.ui.screens.Screen
 import com.example.moviesexample.ui.common.MeScaffold
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onClick: (Movie) -> Unit,
-    vm: HomeViewModel
+    vm: HomeViewModel = hiltViewModel()
 ) {
     val appName = stringResource(R.string.app_name)
     var appBarTitle by remember { mutableStateOf(appName) }

@@ -6,9 +6,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 import kotlin.collections.map
 
-class MoviesRepository(
+class MoviesRepository @Inject constructor(
     private val remoteDataSource: MoviesRemoteDataSource,
     private val regionRepository: RegionRepository,
     private val localDataSource: MoviesLocalDataSource
