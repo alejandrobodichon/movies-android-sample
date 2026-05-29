@@ -1,12 +1,12 @@
-package com.example.moviesexample.data.database
+package com.example.moviesexample.framework.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.moviesexample.data.Movie
+import com.example.moviesexample.domain.Movie
 
 
 @Entity
-data class MovieLocal(
+data class DbMovie(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val poster: String,
@@ -35,5 +35,7 @@ data class MovieLocal(
             favorite = favorite
         )
     }
+
+
 
 }

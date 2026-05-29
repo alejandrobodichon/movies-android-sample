@@ -2,7 +2,7 @@ package com.example.moviesexample
 
 import android.app.Application
 import androidx.room.Room
-import com.example.moviesexample.data.database.MoviesDatabase
+import com.example.moviesexample.framework.database.MoviesDatabase
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp

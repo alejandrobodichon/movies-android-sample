@@ -1,4 +1,4 @@
-package com.example.moviesexample.data.remote
+package com.example.moviesexample.framework.remote
 
 import retrofit2.http.GET
 import retrofit2.http.Path

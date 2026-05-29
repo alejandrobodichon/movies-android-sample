@@ -4,7 +4,7 @@ import com.example.moviesexample.data.datasource.RegionDataSource
 import javax.inject.Inject
 
 
-class RegionRepository @Inject constructor(val regionDataSource: RegionDataSource) {
+class RegionRepository @Inject constructor(val geoCoderRegionDataSource: RegionDataSource) {
 
-    suspend fun findLastRegion(): String = regionDataSource.findLastRegion()
+    suspend fun findLastRegion(): String = geoCoderRegionDataSource.findLastRegion()
 }

@@ -1,4 +1,4 @@
-package com.example.moviesexample.data.remote
+package com.example.moviesexample.framework.remote
 
 import com.example.moviesexample.BuildConfig
 import kotlinx.serialization.json.Json

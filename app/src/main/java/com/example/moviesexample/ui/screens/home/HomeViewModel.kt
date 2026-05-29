@@ -2,7 +2,7 @@ package com.example.moviesexample.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.moviesexample.data.Movie
+import com.example.moviesexample.domain.Movie
 import com.example.moviesexample.data.MoviesRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

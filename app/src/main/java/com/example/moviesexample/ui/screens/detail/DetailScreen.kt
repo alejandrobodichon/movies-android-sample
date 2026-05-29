@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.example.moviesexample.data.Movie
+import com.example.moviesexample.domain.Movie
 import com.example.moviesexample.ui.common.MeScaffold
 import com.example.moviesexample.ui.screens.Screen
 import com.example.moviesexample.Result
