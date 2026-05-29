@@ -8,6 +8,8 @@ import com.example.moviesexample.stateAsResultIn
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.example.moviesexample.Result
+import com.example.moviesexample.usecase.FindMovieByIdUseCase
+import com.example.moviesexample.usecase.ToggleFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.serialization.Serializable
 import javax.inject.Inject
@@ -15,17 +17,18 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     movieId: Int,
-    private val repository: MoviesRepository
+    findMovieByIdUseCase: FindMovieByIdUseCase,
+    val toggleFavoriteUseCase: ToggleFavoriteUseCase
 ) : ViewModel() {
 
-    val state: StateFlow<Result<Movie>> = repository.findMovieById(movieId)
+    val state: StateFlow<Result<Movie>> = findMovieByIdUseCase(movieId)
         .stateAsResultIn(scope = viewModelScope)
 
     fun onFavoriteClick() {
         val currentState = state.value
         if (currentState is Result.Success<Movie>) {
             viewModelScope.launch {
-                repository.toggleFavorite((currentState.data))
+                toggleFavoriteUseCase(currentState.data)
             }
         }
     }
