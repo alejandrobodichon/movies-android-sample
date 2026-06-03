@@ -1,0 +1,11 @@
+package com.example.moviesexample.domain.usecase
+
+import com.example.moviesexample.domain.entity.Movie
+import com.example.moviesexample.domain.repository.IMoviesRepository
+import javax.inject.Inject
+
+class ToggleFavoriteUseCase @Inject constructor(
+    val moviesRepository: IMoviesRepository
+) {
+    suspend operator fun invoke(movie: Movie) = moviesRepository.toggleFavorite(movie)
+}

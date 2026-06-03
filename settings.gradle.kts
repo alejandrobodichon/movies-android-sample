@@ -1,4 +1,7 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -14,6 +17,7 @@ pluginManagement {
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -22,5 +26,11 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Movies Example"
+rootProject.name = "MoviesExample"
 include(":app")
+include(":core:domain")
+include(":feature:home")
+include("feature:detail")
+include(":core:ui")
+include(":core:data")
+include(":core:testing")
