@@ -4,6 +4,7 @@ import com.example.moviesexample.domain.entity.Movie
 import com.example.moviesexample.domain.datasource.MoviesLocalDataSource
 import com.example.moviesexample.domain.datasource.MoviesRemoteDataSource
 import com.example.moviesexample.domain.repository.IMoviesRepository
+import com.example.moviesexample.domain.repository.IRegionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
@@ -12,7 +13,7 @@ import javax.inject.Inject
 
 class MoviesRepository @Inject constructor(
     private val remoteDataSource: MoviesRemoteDataSource,
-    private val regionRepository: RegionRepository,
+    private val regionRepository: IRegionRepository,
     private val localDataSource: MoviesLocalDataSource
 ) : IMoviesRepository {
 
