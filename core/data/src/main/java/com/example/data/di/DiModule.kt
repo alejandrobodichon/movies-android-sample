@@ -9,7 +9,6 @@ import com.example.data.database.MoviesRoomDataSource
 import com.example.data.datasource.FusedLocationDataSource
 import com.example.data.datasource.GeoCoderRegionDataSource
 import com.example.data.remote.ApiKeyInterceptor
-import com.example.data.remote.MoviesClient
 import com.example.data.remote.MoviesServerDataSource
 import com.example.data.remote.MoviesService
 import com.example.data.repository.MoviesRepository
@@ -31,8 +30,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
-import retrofit2.create
-import javax.inject.Named
 import javax.inject.Singleton
 import kotlin.jvm.java
 
