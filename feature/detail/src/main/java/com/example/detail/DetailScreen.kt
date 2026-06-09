@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.Icons.AutoMirrored.Filled
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -19,8 +20,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -35,11 +37,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.example.moviesexample.domain.entity.Movie
 import com.example.ui.MeScaffold
 import com.example.ui.Screen
 import com.example.moviesexample.domain.entity.Result
+import com.example.ui.model.MovieUiModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,33 +52,31 @@ fun DetailScreen(
     vm: DetailViewModel = hiltViewModel(),
     onBack: () -> Unit
 ) {
-    val state by vm.state.collectAsState()
+    val movieDetail by vm.movieDetail.collectAsStateWithLifecycle()
+    val isFavorite by vm.isFavorite.collectAsStateWithLifecycle()
     val detailState = rememberDetailState()
+    val movie = (movieDetail as? Result.Success)?.data
+
 
     Screen {
         val scrollBehavior = detailState.scrollBehavior
         MeScaffold(
-            state = state,
+            state = movieDetail,
             topBar = {
                 TopAppBar(
-                    title = { Text((state as? Result.Success)?.data?.title ?: "") },
+                    title = { Text(movie?.title ?: "") },
                     navigationIcon = {
                         IconButton(onClick = onBack){
-                            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                            Icon(imageVector = Filled.ArrowBack, contentDescription = null)
                         }
                     }
                     , scrollBehavior = scrollBehavior)
             },
             floatingActionButton = {
-                FloatingActionButton(onClick = vm::onFavoriteClick) {
-                    Icon(imageVector =
-                        if((state as? Result.Success)?.data?.favorite == true)
-                            Icons.Default.Favorite
-                        else
-                            Icons.Default.FavoriteBorder,
-                        contentDescription = null
-                    )
-                }
+                FavoriteButton(
+                    isFavorite =  isFavorite ,
+                    onClick = vm::onFavoriteClick
+                )
             },
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         )
@@ -89,7 +91,7 @@ fun DetailScreen(
 @Composable
 private fun MovieDetail(
     modifier: Modifier = Modifier,
-    movie: Movie
+    movie: MovieUiModel
 ) {
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         AsyncImage(
@@ -120,6 +122,22 @@ private fun MovieDetail(
                 Property("Popularity", movie.popularity.toString())
                 Property("Vote average", movie.voteAverage.toString(), true)
             })
+    }
+}
+
+@Composable
+private fun FavoriteButton(
+    isFavorite:  Boolean,
+    onClick: () -> Unit
+) {
+    FloatingActionButton(onClick = onClick) {
+        Icon(
+            imageVector = if (isFavorite)
+                Icons.Default.Favorite
+            else
+                Icons.Default.FavoriteBorder,
+            contentDescription = null
+        )
     }
 }
 
