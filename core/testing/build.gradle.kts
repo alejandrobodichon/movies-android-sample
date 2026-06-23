@@ -13,3 +13,6 @@ kotlin {
         jvmTarget = JvmTarget.JVM_17
     }
 }
+dependencies {
+    implementation(project(":core:domain"))
+}

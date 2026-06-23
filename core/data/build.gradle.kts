@@ -42,4 +42,9 @@ dependencies {
 
     //Libs
     implementation(projects.core.domain)
+    implementation(projects.core.testing)
+
+    androidTestImplementation(libs.androidx.junit.ktx)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.coroutines.test)
 }

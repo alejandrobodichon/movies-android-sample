@@ -7,18 +7,18 @@ import com.example.data.BuildConfig
 import com.example.data.database.MoviesDatabase
 import com.example.data.database.MoviesRoomDataSource
 import com.example.data.datasource.FusedLocationDataSource
-import com.example.data.datasource.GeoCoderRegionDataSource
+import com.example.data.datasource.GeocoderDataSource
+import com.example.data.datasource.RegionDataSourceImpl
+import com.example.data.datasource.GeocoderDataSourceImpl
 import com.example.data.remote.ApiKeyInterceptor
 import com.example.data.remote.MoviesServerDataSource
 import com.example.data.remote.MoviesService
 import com.example.data.repository.MoviesRepository
-import com.example.data.repository.RegionRepository
 import com.example.moviesexample.domain.datasource.LocationDataSource
 import com.example.moviesexample.domain.datasource.MoviesLocalDataSource
 import com.example.moviesexample.domain.datasource.MoviesRemoteDataSource
 import com.example.moviesexample.domain.datasource.RegionDataSource
 import com.example.moviesexample.domain.repository.IMoviesRepository
-import com.example.moviesexample.domain.repository.IRegionRepository
 import com.google.android.gms.location.LocationServices
 import dagger.Binds
 import dagger.Module
@@ -116,7 +116,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindRegionDataSource(
-        impl: GeoCoderRegionDataSource
+        impl: RegionDataSourceImpl
     ): RegionDataSource
 
     @Binds
@@ -130,7 +130,8 @@ abstract class RepositoryModule {
     ): IMoviesRepository
 
     @Binds
-    abstract fun bindRegionRepository(
-        impl: RegionRepository
-    ): IRegionRepository
+    abstract fun bindGeocoderDataSource(
+        impl: GeocoderDataSourceImpl
+    ): GeocoderDataSource
+
 }

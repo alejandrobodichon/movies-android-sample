@@ -1,6 +1,7 @@
 
 import com.android.build.gradle.LibraryExtension
 import io.devexpert.architectcoders.configureKotlinAndroid
+import io.devexpert.architectcoders.configureKotlinJvm
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -15,6 +16,8 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
+                configureKotlinJvm()
+
             }
         }
     }

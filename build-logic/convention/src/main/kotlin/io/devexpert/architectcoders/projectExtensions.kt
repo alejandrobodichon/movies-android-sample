@@ -12,5 +12,8 @@ val Project.libs: VersionCatalog
 internal fun DependencyHandler.implementation(dependency: Any) =
     add("implementation", dependency)
 
+internal fun DependencyHandler.testImplementation(dependency: Any) =
+    add("testImplementation", dependency)
+
 internal fun DependencyHandler.ksp(dependency: Any) =
     add("ksp", dependency)

@@ -14,7 +14,7 @@ internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     commonExtension.apply {
-        compileSdk = 34
+        compileSdk = 36
 
         defaultConfig {
             minSdk = 24
@@ -31,7 +31,7 @@ internal fun Project.configureKotlinAndroid(
             jvmTarget.set(JvmTarget.JVM_17)
         }
     }
-
+    addUnitTestDependencies()
     dependencies {
         implementation(libs.findLibrary("androidx.core.ktx").get())
         implementation(libs.findLibrary("androidx.lifecycle.runtime.ktx").get())
@@ -50,5 +50,16 @@ internal fun Project.configureKotlinJvm() {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
+    }
+    addUnitTestDependencies()
+}
+
+private fun Project.addUnitTestDependencies() {
+    dependencies {
+        add("testImplementation", project.libs.findLibrary("junit").get())
+        add("testImplementation", project.libs.findLibrary("mockito.kotlin").get())
+        add("testImplementation", project.libs.findLibrary("coroutines.test").get())
+        add("testImplementation", project.libs.findLibrary("turbine").get())
+
     }
 }
