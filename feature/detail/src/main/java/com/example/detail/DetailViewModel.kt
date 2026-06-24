@@ -2,8 +2,8 @@ package com.example.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.data.extension.stateAsResultIn
 import com.example.moviesexample.domain.entity.Movie
-import com.example.moviesexample.domain.entity.stateAsResultIn
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.example.moviesexample.domain.usecase.FindMovieByIdUseCase
@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
-import kotlin.map
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
@@ -27,7 +26,10 @@ class DetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val movieFlow = findMovieByIdUseCase(movieId)
-        .shareIn(viewModelScope, SharingStarted.WhileSubscribed(5000), replay = 1)
+        .shareIn(scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            replay = 1
+        )
 
     val movieDetail: StateFlow<Result<MovieUiModel>> = movieFlow
         .map { it.toUiModel() }
@@ -35,7 +37,11 @@ class DetailViewModel @Inject constructor(
 
     val isFavorite: StateFlow<Boolean> = movieFlow
         .map { it.favorite }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = false
+        )
 
     fun onFavoriteClick() {
         viewModelScope.launch {

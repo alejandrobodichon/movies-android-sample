@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.core.ui.R
 import com.example.moviesexample.domain.entity.Result
+import com.example.ui.model.UiText
 
 @Composable
 fun <T> MeScaffold(
@@ -57,7 +58,7 @@ fun <T> MeScaffold(
     ) { padding ->
         when (state) {
             is Result.Loading -> {
-                Box(modifier
+                Box(Modifier
                     .fillMaxSize()
                     .padding(padding),
                     contentAlignment = Alignment.Center
@@ -68,7 +69,7 @@ fun <T> MeScaffold(
 
             is Result.Error -> {
                 ErrorText(
-                    error = state.exception,
+                    error = state.appError.toUiText(),
                     modifier = Modifier.padding(padding)
                 )
             }
@@ -81,7 +82,7 @@ fun <T> MeScaffold(
 }
 
 @Composable
-fun ErrorText(error: Throwable, modifier: Modifier) {
+fun ErrorText(error: UiText, modifier: Modifier) {
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -94,7 +95,7 @@ fun ErrorText(error: Throwable, modifier: Modifier) {
                 modifier = Modifier.size(72.dp)
             )
             Text(
-                text = error.localizedMessage ?: stringResource(id = R.string.error),
+                text = error.asString(),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineSmall,
             )

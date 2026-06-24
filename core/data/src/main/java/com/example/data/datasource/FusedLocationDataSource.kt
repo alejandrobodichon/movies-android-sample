@@ -25,8 +25,6 @@ class FusedLocationDataSource @Inject constructor(
             }
         }
     }
-
-
 }
 
 private fun AndroidLocation.toDomainLocation() = Location(

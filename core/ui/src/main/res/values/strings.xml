@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">Android Movie</string>
     <string name="error">Se produjo un error al querer cargar la pantalla</string>
+
+    <!-- ===== Network errors ===== -->
+    <string name="error_no_internet">No tenés conexión a internet. Revisá tu red e intentá de nuevo.</string>
+    <string name="error_timeout">La conexión tardó demasiado. Intentá nuevamente.</string>
+    <string name="error_server">Tuvimos un problema en el servidor. Intentá más tarde.</string>
+    <string name="error_http">Error de servidor (código %1$d).</string>
+
+    <!-- ===== Location errors ===== -->
+    <string name="error_location_permission">Necesitamos permiso de ubicación para mostrarte el contenido de tu región.</string>
+    <string name="error_location_unavailable">No pudimos obtener tu ubicación. Verificá que el GPS esté activado.</string>
+
+    <!-- ===== Generic error ===== -->
+    <string name="error_unknown">Ocurrió un error inesperado. Intentá nuevamente.</string>
+
 </resources>

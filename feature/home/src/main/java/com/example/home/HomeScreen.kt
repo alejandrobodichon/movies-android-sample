@@ -18,9 +18,12 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,6 +45,7 @@ import com.example.moviesexample.domain.entity.Movie
 import com.example.ui.MeScaffold
 import com.example.ui.PermissionRequestEffect
 import com.example.ui.Screen
+import com.example.ui.toUiText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,13 +53,23 @@ fun HomeScreen(
     onClick: (Movie) -> Unit,
     vm: HomeViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val appName = stringResource(R.string.app_name)
     var appBarTitle by remember { mutableStateOf(appName) }
     val homeState = rememberHomeState()
     val state by vm.state.collectAsStateWithLifecycle()
+    val isRefreshing by vm.isRefreshing.collectAsStateWithLifecycle()
+
+    val snackbarHostState = remember { SnackbarHostState() }
 
     PermissionRequestEffect(permission = Manifest.permission.ACCESS_COARSE_LOCATION) {
         vm.onUiReady()
+    }
+
+    LaunchedEffect(Unit) {
+        vm.errorEvent.collect { error ->
+            snackbarHostState.showSnackbar(error.toUiText().asString(context))
+        }
     }
 
     Screen {
@@ -67,16 +82,21 @@ fun HomeScreen(
             },
             modifier = Modifier.nestedScroll(homeState.scrollBehavior.nestedScrollConnection)
         ) { contentPadding, movies ->
+            PullToRefreshBox(
+                isRefreshing = isRefreshing,
+                onRefresh = { vm.refresh() },
+                modifier = Modifier.padding(contentPadding)
+            ) {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(120.dp),
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
-                    contentPadding = contentPadding
                 ) {
                     items(items = movies) {
                         MovieItem(movie = it, onClick = onClick)
                     }
                 }
+            }
         }
     }
 }
