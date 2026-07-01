@@ -3,7 +3,6 @@ package com.example.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.extension.stateAsResultIn
-import com.example.moviesexample.domain.entity.Movie
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.example.moviesexample.domain.usecase.FindMovieByIdUseCase
@@ -12,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.example.moviesexample.domain.entity.Result
 import com.example.ui.model.MovieUiModel
+import com.example.ui.model.toUiModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
@@ -31,11 +31,11 @@ class DetailViewModel @Inject constructor(
             replay = 1
         )
 
-    val movieDetail: StateFlow<Result<MovieUiModel>> = movieFlow
+    val movieState: StateFlow<Result<MovieUiModel>> = movieFlow
         .map { it.toUiModel() }
         .stateAsResultIn(viewModelScope)
 
-    val isFavorite: StateFlow<Boolean> = movieFlow
+    val favoriteState: StateFlow<Boolean> = movieFlow
         .map { it.favorite }
         .stateIn(
             scope = viewModelScope,
@@ -51,18 +51,6 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    private fun Movie.toUiModel() =
-        MovieUiModel(
-            id = id,
-            poster = poster,
-            title = title,
-            releaseDate = releaseDate,
-            overview = overview,
-            backdrop = backdrop,
-            originalTitle = originalTitle,
-            originalLanguage = originalLanguage,
-            popularity = popularity,
-            voteAverage = voteAverage
-        )
+
 
 }

@@ -1,18 +1,19 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("java-library")
-    alias(libs.plugins.jetbrains.kotlin.jvm)
+    id("moviesexample.jvm.library")
 }
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-kotlin {
-    compilerOptions {
-        jvmTarget = JvmTarget.JVM_17
+listOf(
+    "assembleDebug",
+    "assembleDebugAndroidTest",
+    "assembleDebugUnitTest",
+    "assembleReleaseUnitTest"
+).forEach { taskName ->
+    tasks.register(taskName) {
+        dependsOn("assemble", "testClasses")
     }
 }
 dependencies {
-    implementation(project(":core:domain"))
+    implementation(projects.core.domain)
+    implementation(libs.coroutines.test)
+    implementation(libs.junit)
 }

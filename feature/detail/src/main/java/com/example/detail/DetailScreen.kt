@@ -20,9 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -39,7 +37,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.example.moviesexample.domain.entity.Movie
 import com.example.ui.MeScaffold
 import com.example.ui.Screen
 import com.example.moviesexample.domain.entity.Result
@@ -52,8 +49,8 @@ fun DetailScreen(
     vm: DetailViewModel = hiltViewModel(),
     onBack: () -> Unit
 ) {
-    val movieDetail by vm.movieDetail.collectAsStateWithLifecycle()
-    val isFavorite by vm.isFavorite.collectAsStateWithLifecycle()
+    val movieDetail by vm.movieState.collectAsStateWithLifecycle()
+    val isFavorite by vm.favoriteState.collectAsStateWithLifecycle()
     val detailState = rememberDetailState()
     val movie = (movieDetail as? Result.Success)?.data
 

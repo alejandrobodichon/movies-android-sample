@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(fetchMoviesUseCase: FetchMoviesUseCase,
-    val requestMoviesUseCase: RefreshMoviesUseCase
+    val refreshMoviesUseCase: RefreshMoviesUseCase
 ): ViewModel(){
 
     private var uiReady = MutableStateFlow(false)
@@ -47,7 +47,7 @@ class HomeViewModel @Inject constructor(fetchMoviesUseCase: FetchMoviesUseCase,
     fun refresh() {
         viewModelScope.launch {
             _isRefreshing.value = true
-            when (val result = requestMoviesUseCase()) {
+            when (val result = refreshMoviesUseCase()) {
                 is Result.Error -> _errorEvent.emit(result.appError)
                 is Result.Success -> { }
                 is Result.Loading -> { }
