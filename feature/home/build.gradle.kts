@@ -30,6 +30,7 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.ui)
     implementation(projects.core.data)
+    testImplementation(libs.compose.ui.test.junit4)
     testImplementation(projects.core.testing)
     testImplementation(testFixtures(project(":core:data")))
 }

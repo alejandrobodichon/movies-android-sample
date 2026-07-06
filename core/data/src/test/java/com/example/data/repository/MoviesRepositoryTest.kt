@@ -121,7 +121,7 @@ class MoviesRepositoryTest {
         //When
         repository.toggleFavorite(movie)
         //Then
-        verify(localDataSource).saveMovies(listOf(movie.copy(favorite = !movie.favorite)))
+        verify(localDataSource).updateFavorite(movie.id, !movie.favorite)
     }
 
 }

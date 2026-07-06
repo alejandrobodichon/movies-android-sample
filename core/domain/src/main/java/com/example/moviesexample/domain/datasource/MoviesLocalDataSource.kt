@@ -8,4 +8,5 @@ interface MoviesLocalDataSource {
     fun findMovieById(id: Int): Flow<Movie?>
 
     suspend fun saveMovies(movies: List<Movie>)
+    suspend fun updateFavorite(movieId: Int, favorite: Boolean)
 }

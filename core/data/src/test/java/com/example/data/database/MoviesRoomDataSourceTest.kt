@@ -61,7 +61,7 @@ class MoviesRoomDataSourceTest {
         val result = dataSource.findMovieById(5).first()
 
         assertEquals(5, result?.id)
-        assertEquals(dbMovie.title, result?.title)
+        assertEquals(dbMovie.movie.title, result?.title)
     }
 
     @Test
@@ -93,19 +93,6 @@ class MoviesRoomDataSourceTest {
     }
 
     @Test
-    fun `saveMovies preserves favorite flag when converting to DbMovie`() = runTest {
-        val movie = sampleMovie(1).copy(favorite = true)
-        whenever(moviesDao.fetchPopularMovies()).thenReturn(flowOf(emptyList()))
-        val dataSource = MoviesRoomDataSource(moviesDao)
-        val captor = argumentCaptor<List<DbMovie>>()
-
-        dataSource.saveMovies(listOf(movie))
-
-        verify(moviesDao).saveMovies(captor.capture())
-        assertEquals(true, captor.firstValue[0].favorite)
-    }
-
-    @Test
     fun `saveMovies preserves null backdrop when converting to DbMovie`() = runTest {
         val movie = sampleMovie(1).copy(backdrop = null)
         whenever(moviesDao.fetchPopularMovies()).thenReturn(flowOf(emptyList()))
@@ -118,17 +105,19 @@ class MoviesRoomDataSourceTest {
         assertNull(captor.firstValue[0].backdrop)
     }
 
-    private fun sampleDbMovie(id: Int) = DbMovie(
-        id = id,
-        poster = "poster_$id",
-        title = "Title $id",
-        releaseDate = "2024-01-01",
-        overview = "Overview $id",
-        backdrop = "backdrop_$id",
-        originalTitle = "Original $id",
-        originalLanguage = "en",
-        popularity = 7.5,
-        voteAverage = 8.0,
+    private fun sampleDbMovie(id: Int) = DbMovieWithFavorite(
+        movie = DbMovie(
+            id = id,
+            poster = "poster_$id",
+            title = "Title $id",
+            releaseDate = "2024-01-01",
+            overview = "Overview $id",
+            backdrop = "backdrop_$id",
+            originalTitle = "Original $id",
+            originalLanguage = "en",
+            popularity = 7.5,
+            voteAverage = 8.0,
+        ),
         favorite = false
     )
 }

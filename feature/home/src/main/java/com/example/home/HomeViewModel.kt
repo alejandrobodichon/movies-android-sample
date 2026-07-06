@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 import com.example.moviesexample.domain.entity.Result
 import com.example.moviesexample.domain.usecase.RefreshMoviesUseCase
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(fetchMoviesUseCase: FetchMoviesUseCase,
-    val refreshMoviesUseCase: RefreshMoviesUseCase
+    val refreshMoviesUseCase: RefreshMoviesUseCase,
 ): ViewModel(){
 
     private var uiReady = MutableStateFlow(false)
@@ -31,7 +32,10 @@ class HomeViewModel @Inject constructor(fetchMoviesUseCase: FetchMoviesUseCase,
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
 
-    private val _errorEvent = MutableSharedFlow<AppError>()
+    private val _errorEvent = MutableSharedFlow<AppError>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
     val errorEvent: SharedFlow<AppError> = _errorEvent.asSharedFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)

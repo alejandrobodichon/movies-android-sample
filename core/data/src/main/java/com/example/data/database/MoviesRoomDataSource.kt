@@ -11,10 +11,16 @@ class MoviesRoomDataSource @Inject constructor(private val moviesDao: MoviesDao)
     override val movies: Flow<List<Movie>> =
         moviesDao.fetchPopularMovies().map { it.toDomainMovies()}
 
-    override fun findMovieById(id: Int) =
+    override fun findMovieById(id: Int): Flow<Movie?> =
         moviesDao.findMovieById(id).map{ it?.toDomainMovie()}
+
     override suspend fun saveMovies(movies: List<Movie>) =
         moviesDao.saveMovies(movies.map { it.toDbMovie()})
+
+    override suspend fun updateFavorite(movieId: Int, favorite: Boolean) {
+        if (favorite) moviesDao.addFavorite(DbFavorite(movieId))
+        else moviesDao.removeFavorite(DbFavorite(movieId))
+    }
 
     fun Movie.toDbMovie() = DbMovie(
         id = id,
@@ -27,8 +33,8 @@ class MoviesRoomDataSource @Inject constructor(private val moviesDao: MoviesDao)
         originalLanguage = originalLanguage,
         popularity = popularity,
         voteAverage = voteAverage,
-        favorite = favorite
     )
 }
 
-private fun List<DbMovie>.toDomainMovies(): List<Movie> = map{ it.toDomainMovie() }
+private fun List<DbMovieWithFavorite>.toDomainMovies(): List<Movie> = map{ it.toDomainMovie() }
+

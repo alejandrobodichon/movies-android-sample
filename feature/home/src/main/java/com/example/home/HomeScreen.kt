@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -38,39 +39,59 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import coil.compose.AsyncImage
 import com.example.core.ui.R
+import com.example.moviesexample.domain.entity.AppError
 import com.example.moviesexample.domain.entity.Movie
+import com.example.moviesexample.domain.entity.Result
 import com.example.ui.MeScaffold
 import com.example.ui.PermissionRequestEffect
 import com.example.ui.Screen
 import com.example.ui.toUiText
+import kotlinx.coroutines.flow.StateFlow
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onClick: (Movie) -> Unit,
     vm: HomeViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
-    val appName = stringResource(R.string.app_name)
-    var appBarTitle by remember { mutableStateOf(appName) }
-    val homeState = rememberHomeState()
-    val state by vm.state.collectAsStateWithLifecycle()
-    val isRefreshing by vm.isRefreshing.collectAsStateWithLifecycle()
-
-    val snackbarHostState = remember { SnackbarHostState() }
-
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
     PermissionRequestEffect(permission = Manifest.permission.ACCESS_COARSE_LOCATION) {
         vm.onUiReady()
     }
+    val context = LocalContext.current
+
+    val state by vm.state.collectAsStateWithLifecycle()
+    val isRefreshing by vm.isRefreshing.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
-        vm.errorEvent.collect { error ->
-            snackbarHostState.showSnackbar(error.toUiText().asString(context))
-        }
+        vm.errorEvent
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .collect { error ->
+                snackbarHostState.showSnackbar(error.toUiText().asString(context))
+            }
     }
+    HomeScreen(onClick, { vm.refresh() }, state, isRefreshing, snackbarHostState)
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeScreen(
+    onClick: (Movie) -> Unit,
+    onRefresh: () -> Unit,
+    state: Result<List<Movie>>,
+    isRefreshing: Boolean,
+    snackbarHostState: SnackbarHostState
+) {
+    val appName = stringResource(R.string.app_name)
+    var appBarTitle by remember { mutableStateOf(appName) }
+    val homeState = rememberHomeState()
 
     Screen {
         MeScaffold(
@@ -80,11 +101,12 @@ fun HomeScreen(
                     Text(appBarTitle)
                 }, scrollBehavior = homeState.scrollBehavior)
             },
+            snackbarHost = { SnackbarHost(snackbarHostState) },
             modifier = Modifier.nestedScroll(homeState.scrollBehavior.nestedScrollConnection)
         ) { contentPadding, movies ->
             PullToRefreshBox(
                 isRefreshing = isRefreshing,
-                onRefresh = { vm.refresh() },
+                onRefresh = { onRefresh() },
                 modifier = Modifier.padding(contentPadding)
             ) {
                 LazyVerticalGrid(

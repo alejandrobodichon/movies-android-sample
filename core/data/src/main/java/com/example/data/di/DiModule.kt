@@ -39,7 +39,9 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(app: Application) = Room.databaseBuilder(app, MoviesDatabase::class.java, "movies-db").build()
+    fun provideDatabase(app: Application) = Room.databaseBuilder(app, MoviesDatabase::class.java, "movies-db")
+        .fallbackToDestructiveMigration(dropAllTables = true)
+        .build()
 
     @Provides
     fun provideMoviesDao(db: MoviesDatabase) = db.moviesDao

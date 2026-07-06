@@ -4,6 +4,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 
 val Project.libs: VersionCatalog
@@ -17,3 +18,12 @@ internal fun DependencyHandler.testImplementation(dependency: Any) =
 
 internal fun DependencyHandler.ksp(dependency: Any) =
     add("ksp", dependency)
+
+internal fun Project.addUnitTestDependencies() {
+    dependencies {
+        testImplementation(project.libs.findLibrary("junit").get())
+        testImplementation(project.libs.findLibrary("mockito.kotlin").get())
+        testImplementation(project.libs.findLibrary("coroutines.test").get())
+        testImplementation(project.libs.findLibrary("turbine").get())
+    }
+}

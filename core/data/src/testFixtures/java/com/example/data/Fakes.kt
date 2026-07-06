@@ -8,6 +8,7 @@ import com.example.moviesexample.domain.entity.Movie
 import com.example.moviesexample.domain.repository.IMoviesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 
 fun buildMoviesRepository(
@@ -21,19 +22,30 @@ fun buildMoviesRepository(
     return MoviesRepository(remoteDataSource, regionDataSource, localDataSource)
 }
 
-class FakeLocalDataSource(initialMovies: List<Movie> = emptyList()) : MoviesLocalDataSource {
+class FakeLocalDataSource(
+    initialMovies: List<Movie> = emptyList()
+) : MoviesLocalDataSource {
 
     private val inMemoryMovies = MutableStateFlow(initialMovies)
+    private val favoriteIds = MutableStateFlow<Set<Int>>(emptySet())
 
-    override val movies: Flow<List<Movie>> = inMemoryMovies
+    override val movies: Flow<List<Movie>> =
+        combine(inMemoryMovies, favoriteIds) { movies, favs ->
+            movies.map { it.copy(favorite = it.id in favs) }
+        }
 
     override fun findMovieById(id: Int): Flow<Movie?> =
-        inMemoryMovies.map { movies -> movies.firstOrNull { it.id == id } }
+        movies.map { list -> list.firstOrNull { it.id == id } }
 
     override suspend fun saveMovies(movies: List<Movie>) {
         val current = inMemoryMovies.value.associateBy { it.id }.toMutableMap()
         movies.forEach { current[it.id] = it }
         inMemoryMovies.value = current.values.toList()
+    }
+
+    override suspend fun updateFavorite(movieId: Int, favorite: Boolean) {
+        favoriteIds.value = if (favorite) favoriteIds.value + movieId
+        else favoriteIds.value - movieId
     }
 }
 

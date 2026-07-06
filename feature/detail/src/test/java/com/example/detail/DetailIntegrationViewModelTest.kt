@@ -20,14 +20,42 @@ class DetailIntegrationViewModelTest {
     @get:Rule
     val coroutineTestRule = CoroutinesTestRule(testDispatcher = StandardTestDispatcher())
 
-
     @Test
-    fun `Data is loaded form server when local data source is empty`() = runTest{
-        val remoteData = sampleMovies(1, 2, 3)
-        val vm = createViewmodelWithFakes(id = 2, localData = remoteData)
+    fun `Data is loaded from local data source when available`() = runTest{
+        val localData = sampleMovies(1, 2, 3)
+        val vm = createViewmodelWithFakes(id = 2, localData = localData)
         vm.movieState.test {
             assertEquals(Result.Loading, awaitItem())
-            assertEquals(Result.Success(remoteData[1].toUiModel()), awaitItem())
+            assertEquals(Result.Success(localData[1].toUiModel()), awaitItem())
+        }
+        vm.favoriteState.test {
+            assertEquals(false, awaitItem())
+        }
+    }
+
+    @Test
+    fun `Data is loaded from server when local data source is empty`() = runTest{
+        val remoteMovies = sampleMovies(1, 2, 3)
+        val vm = createViewmodelWithFakes(id = 2, remoteData = remoteMovies)
+        vm.movieState.test {
+            assertEquals(Result.Loading, awaitItem())
+            assertEquals(Result.Success(remoteMovies[1].toUiModel()), awaitItem())
+        }
+        vm.favoriteState.test {
+            assertEquals(false, awaitItem())
+        }
+    }
+
+    @Test
+    fun `Toggle favorite updates data source`() = runTest{
+        val localMovies = sampleMovies(1, 2, 3)
+        val vm = createViewmodelWithFakes(id = 2, localData = localMovies)
+        vm.favoriteState.test {
+            assertEquals(false, awaitItem())
+            vm.onFavoriteClick()
+            assertEquals(true, awaitItem())
+            vm.onFavoriteClick()
+            assertEquals(false, awaitItem())
         }
     }
 

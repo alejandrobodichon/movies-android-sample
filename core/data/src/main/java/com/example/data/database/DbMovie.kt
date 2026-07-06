@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.example.moviesexample.domain.entity.Movie
 
 
-@Entity
+@Entity(tableName = "movies")
 data class DbMovie(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
@@ -18,24 +18,4 @@ data class DbMovie(
     val originalLanguage: String,
     val popularity: Double,
     val voteAverage: Double,
-    val favorite: Boolean = false
-) {
-    fun toDomainMovie(): Movie {
-        return Movie(
-            id = id,
-            poster = poster,
-            title = title,
-            releaseDate = releaseDate,
-            overview = overview,
-            backdrop = backdrop,
-            originalTitle = originalTitle,
-            originalLanguage = originalLanguage,
-            popularity = popularity,
-            voteAverage = voteAverage,
-            favorite = favorite
-        )
-    }
-
-
-
-}
+)

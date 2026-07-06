@@ -50,9 +50,7 @@ class MoviesRepository @Inject constructor(
         }.filterNotNull()
 
     override suspend fun toggleFavorite(movie: Movie) {
-        localDataSource.saveMovies(listOf(
-            movie.copy(favorite = !movie.favorite))
-        )
+        localDataSource.updateFavorite(movie.id, !movie.favorite)
     }
 
 }

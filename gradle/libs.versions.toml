@@ -27,6 +27,7 @@ mockito-kotlin = "5.3.1"
 turbine = "1.2.1"
 androidxTestRunner = "1.6.2"
 junitKtx = "1.3.0"
+uiTestJunit4 = "1.11.3"
 
 
 [libraries]
@@ -69,6 +70,7 @@ turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 hilt-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "uiTestJunit4" }
 
 
 [plugins]
