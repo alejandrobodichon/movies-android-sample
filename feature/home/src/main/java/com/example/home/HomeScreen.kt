@@ -35,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -107,9 +108,12 @@ fun HomeScreen(
             PullToRefreshBox(
                 isRefreshing = isRefreshing,
                 onRefresh = { onRefresh() },
-                modifier = Modifier.padding(contentPadding)
+                modifier = Modifier
+                    .testTag("PullToRefreshBox")
+                    .padding(contentPadding)
             ) {
                 LazyVerticalGrid(
+                    modifier = Modifier.testTag("MoviesGrid"),
                     columns = GridCells.Adaptive(120.dp),
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -127,6 +131,7 @@ fun HomeScreen(
 fun MovieItem(movie: Movie, onClick: (Movie) -> Unit) {
     Column(
         modifier = Modifier
+            .testTag("MovieItem")
             .clickable { onClick(movie) }
     ) {
         Box(
@@ -136,12 +141,14 @@ fun MovieItem(movie: Movie, onClick: (Movie) -> Unit) {
                 .clip(MaterialTheme.shapes.medium)
         ) {
             AsyncImage(
+                modifier = Modifier.testTag("MoviePoster"),
                 model = movie.poster,
                 contentDescription = movie.title,
                 contentScale = ContentScale.Crop
             )
             Icon(
                 modifier = Modifier
+                    .testTag("FavIcon")
                     .align(Alignment.TopEnd)
                     .padding(8.dp)
                     .size(14.dp),
@@ -156,6 +163,7 @@ fun MovieItem(movie: Movie, onClick: (Movie) -> Unit) {
         }
         Text(
             modifier = Modifier
+                .testTag("MovieTitle")
                 .fillMaxWidth(),
             textAlign = TextAlign.Center,
             maxLines = 1,

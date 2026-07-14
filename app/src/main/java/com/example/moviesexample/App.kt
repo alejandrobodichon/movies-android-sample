@@ -6,16 +6,4 @@ import com.example.data.database.MoviesDatabase
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class App: Application() {
-    lateinit var db: MoviesDatabase
-        private set
-
-    override fun onCreate() {
-        super.onCreate()
-        db = Room.databaseBuilder(
-            this,
-            MoviesDatabase::class.java,
-            "movies-db")
-            .build()
-    }
-}
+class App: Application()

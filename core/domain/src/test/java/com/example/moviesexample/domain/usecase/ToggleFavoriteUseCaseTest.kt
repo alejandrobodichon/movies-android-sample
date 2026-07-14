@@ -17,9 +17,9 @@ class ToggleFavoriteUseCaseTest {
         val useCase = ToggleFavoriteUseCase(repository)
 
         //When
-        useCase(movie)
+        useCase(movie.id, movie.favorite)
 
         //Then
-        verify(repository).toggleFavorite(movie)
+        verify(repository).toggleFavorite(movie.id, movie.favorite)
     }
 }

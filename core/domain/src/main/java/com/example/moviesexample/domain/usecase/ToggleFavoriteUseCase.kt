@@ -7,5 +7,5 @@ import javax.inject.Inject
 class ToggleFavoriteUseCase @Inject constructor(
     val moviesRepository: IMoviesRepository
 ) {
-    suspend operator fun invoke(movie: Movie) = moviesRepository.toggleFavorite(movie)
+    suspend operator fun invoke(movieId: Int, isFavorite: Boolean) = moviesRepository.toggleFavorite(movieId, isFavorite)
 }

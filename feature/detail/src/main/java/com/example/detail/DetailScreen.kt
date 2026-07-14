@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
@@ -51,36 +52,52 @@ fun DetailScreen(
 ) {
     val movieDetail by vm.movieState.collectAsStateWithLifecycle()
     val isFavorite by vm.favoriteState.collectAsStateWithLifecycle()
-    val detailState = rememberDetailState()
-    val movie = (movieDetail as? Result.Success)?.data
+    DetailScreen(
+        state = movieDetail,
+        isFavorite = isFavorite,
+        onFavoriteClick = vm::onFavoriteClick,
+        onBack = onBack
+    )
+}
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DetailScreen(
+    state: Result<MovieUiModel>,
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit,
+    onBack: () -> Unit
+) {
+    val detailState = rememberDetailState()
+    val movie = (state as? Result.Success)?.data
 
     Screen {
         val scrollBehavior = detailState.scrollBehavior
         MeScaffold(
-            state = movieDetail,
+            state = state,
             topBar = {
                 TopAppBar(
                     title = { Text(movie?.title ?: "") },
                     navigationIcon = {
-                        IconButton(onClick = onBack){
+                        IconButton(onClick = onBack) {
                             Icon(imageVector = Filled.ArrowBack, contentDescription = null)
                         }
-                    }
-                    , scrollBehavior = scrollBehavior)
+                    },
+                    scrollBehavior = scrollBehavior
+                )
             },
             floatingActionButton = {
                 FavoriteButton(
-                    isFavorite =  isFavorite ,
-                    onClick = vm::onFavoriteClick
+                    isFavorite = isFavorite,
+                    onClick = onFavoriteClick
                 )
             },
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-        )
-        { contentPadding, movie ->
-            MovieDetail(modifier = Modifier.padding(contentPadding),
-                movie = movie)
-
+        ) { contentPadding, movie ->
+            MovieDetail(
+                modifier = Modifier.padding(contentPadding),
+                movie = movie
+            )
         }
     }
 }
@@ -96,12 +113,14 @@ private fun MovieDetail(
             contentDescription = movie.title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
+                .testTag("Backdrop")
                 .fillMaxWidth()
                 .aspectRatio(2 / 3f)
                 .clip(MaterialTheme.shapes.medium)
         )
         Text(
             modifier = Modifier
+                .testTag("DetailTitle")
                 .fillMaxWidth()
                 .padding( 16.dp),
             textAlign = TextAlign.Start,
@@ -109,6 +128,7 @@ private fun MovieDetail(
         )
         Text(
             modifier = Modifier
+                .testTag("DetailDescription")
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.secondaryContainer)
                 .padding( 16.dp),
@@ -127,8 +147,8 @@ private fun FavoriteButton(
     isFavorite:  Boolean,
     onClick: () -> Unit
 ) {
-    FloatingActionButton(onClick = onClick) {
-        Icon(
+    FloatingActionButton(modifier = Modifier.testTag("FloatingActionButton"), onClick = onClick) {
+        Icon(modifier = Modifier.testTag("FavIcon"),
             imageVector = if (isFavorite)
                 Icons.Default.Favorite
             else

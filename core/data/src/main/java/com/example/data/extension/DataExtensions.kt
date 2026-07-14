@@ -23,14 +23,25 @@ fun Throwable.toAppError(): AppError = when (this) {
     else -> AppError.Unknown
 }
 
-fun <T> Flow<T>.stateAsResultIn(scope: CoroutineScope): StateFlow<Result<T>> =
+fun <T> Flow<T>.asResult(): Flow<Result<T>> =
     map<T, Result<T>> { Result.Success(it) }
-        .catch {  throwable ->
+        .catch { throwable ->
             if (throwable is CancellationException) throw throwable
             emit(Result.Error(throwable.toAppError()))
         }
+
+fun <T> Flow<T>.stateAsResultIn(scope: CoroutineScope): StateFlow<Result<T>> =
+    asResult()
         .stateIn(
             scope = scope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = Result.Loading
-        )
+    )
+
+fun <T> Result<T>.getOrNull(): T? = (this as? Result.Success)?.data
+
+inline fun <T, R> Result<T>.mapResult(transform: (T) -> R): Result<R> = when (this) {
+    is Result.Success -> Result.Success(transform(data))
+    is Result.Error   -> Result.Error(appError)
+    Result.Loading    -> Result.Loading
+}

@@ -7,6 +7,6 @@ import com.example.moviesexample.domain.entity.Result
 interface IMoviesRepository {
     val movies: Flow<List<Movie>>
     fun findMovieById(id: Int): Flow<Movie>
-    suspend fun toggleFavorite(movie: Movie)
+    suspend fun toggleFavorite(movieId: Int, isFavorite: Boolean)
     suspend fun refresh(): Result<Unit>
 }

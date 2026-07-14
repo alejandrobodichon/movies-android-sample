@@ -26,6 +26,9 @@ internal fun Project.configureAndroidCompose(
         implementation(libs.findLibrary("androidx.material3").get())
         implementation(libs.findLibrary("coil.compose").get())
         implementation(libs.findLibrary("androidx.activity.compose").get())
+        testImplementation(libs.findLibrary("compose.ui.test.junit4").get())
+        testImplementation(libs.findLibrary("robolectric").get())
+        testImplementation(libs.findLibrary("androidx.ui.test.manifest").get())
 
         add("debugImplementation", libs.findLibrary("androidx.ui.tooling").get())
     }

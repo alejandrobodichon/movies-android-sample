@@ -119,7 +119,7 @@ class MoviesRepositoryTest {
         val movie = sampleMovie(1)
         mockFindByIdDataSources(localMovie = movie)
         //When
-        repository.toggleFavorite(movie)
+        repository.toggleFavorite(movie.id, movie.favorite)
         //Then
         verify(localDataSource).updateFavorite(movie.id, !movie.favorite)
     }

@@ -1,6 +1,7 @@
 package com.example.ui.model
 
 import androidx.compose.runtime.Immutable
+import com.example.moviesexample.domain.entity.Movie
 
 @Immutable
 data class MovieUiModel(

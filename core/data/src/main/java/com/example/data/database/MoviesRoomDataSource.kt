@@ -1,5 +1,6 @@
 package com.example.data.database
 
+import androidx.room.Transaction
 import com.example.moviesexample.domain.datasource.MoviesLocalDataSource
 import com.example.moviesexample.domain.entity.Movie
 import kotlinx.coroutines.flow.Flow
@@ -17,6 +18,7 @@ class MoviesRoomDataSource @Inject constructor(private val moviesDao: MoviesDao)
     override suspend fun saveMovies(movies: List<Movie>) =
         moviesDao.saveMovies(movies.map { it.toDbMovie()})
 
+    @Transaction
     override suspend fun updateFavorite(movieId: Int, favorite: Boolean) {
         if (favorite) moviesDao.addFavorite(DbFavorite(movieId))
         else moviesDao.removeFavorite(DbFavorite(movieId))
