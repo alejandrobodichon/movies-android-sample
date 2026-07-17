@@ -1,0 +1,14 @@
+{
+  "adult": false,
+  "backdrop_path": "/backdrop_7.jpg",
+  "genre_ids": [28, 12],
+  "id": 7,
+  "overview": "Overview 7",
+  "popularity": 7.5,
+  "poster_path": "/poster_7.jpg",
+  "release_date": "2024-01-01",
+  "title": "Title 7",
+  "original_title": "Original Title 7",
+  "original_language": "en",
+  "vote_average": 8.0
+}

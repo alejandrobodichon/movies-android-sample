@@ -1,4 +1,4 @@
-import io.devexpert.architectcoders.configureKotlinJvm
+import com.example.moviesexample.configureKotlinJvm
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

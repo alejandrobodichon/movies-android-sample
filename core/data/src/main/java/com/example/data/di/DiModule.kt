@@ -30,6 +30,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 import kotlin.jvm.java
 
@@ -82,10 +83,12 @@ internal object NetworkModule {
     @Singleton
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
-        json: Json
+        json: Json,
+        @Named("apiUrl")
+        apiUrl: String
     ): Retrofit =
         Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/")
+            .baseUrl(apiUrl)
             .client(okHttpClient)
             .addConverterFactory(
                 json.asConverterFactory("application/json".toMediaType())
@@ -100,7 +103,14 @@ internal object NetworkModule {
         retrofit.create(MoviesService::class.java)
 }
 
-
+@Module
+@InstallIn(SingletonComponent::class)
+object NetworkExtraModule {
+    @Provides
+    @Singleton
+    @Named("apiUrl")
+    fun provideApiUrl(): String = "https://api.themoviedb.org/3/"
+}
 
 @Module
 @InstallIn(SingletonComponent::class)

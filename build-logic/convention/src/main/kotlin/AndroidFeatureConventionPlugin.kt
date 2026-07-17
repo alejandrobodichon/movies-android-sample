@@ -1,8 +1,8 @@
 
 import com.android.build.gradle.LibraryExtension
-import io.devexpert.architectcoders.addUnitTestDependencies
-import io.devexpert.architectcoders.libs
-import io.devexpert.architectcoders.testImplementation
+import com.example.moviesexample.addUnitTestDependencies
+import com.example.moviesexample.libs
+import com.example.moviesexample.testImplementation
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure

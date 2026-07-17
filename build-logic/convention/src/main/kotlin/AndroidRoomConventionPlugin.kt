@@ -1,7 +1,7 @@
 
-import io.devexpert.architectcoders.implementation
-import io.devexpert.architectcoders.ksp
-import io.devexpert.architectcoders.libs
+import com.example.moviesexample.implementation
+import com.example.moviesexample.ksp
+import com.example.moviesexample.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies

@@ -1,5 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
-import io.devexpert.architectcoders.configureAndroidCompose
+import com.example.moviesexample.configureAndroidCompose
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType

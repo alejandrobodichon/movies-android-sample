@@ -1,4 +1,4 @@
-import io.devexpert.architectcoders.libs
+import com.example.moviesexample.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

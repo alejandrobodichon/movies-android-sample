@@ -57,6 +57,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit.ktx)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.coroutines.test)
+    testImplementation(libs.hilt.testing)
+    testImplementation(libs.okhttp.mockwebserver)
+
 
     testFixturesImplementation(projects.core.domain)
     testFixturesImplementation(libs.coroutines.test)
