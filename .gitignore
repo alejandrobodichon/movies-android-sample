@@ -16,3 +16,4 @@ local.properties
 /.idea/androidTestResultsUserPreferences.xml
 /.idea/gradle.xml
 graphify-out/
+google-services.json

@@ -1,9 +1,12 @@
 plugins {
+    id("com.android.application")
+    id("com.google.gms.google-services")
     id("moviesexample.android.application")
     id("moviesexample.android.application.compose")
     id("moviesexample.di.library.compose")
     id("moviesexample.android.room")
     id("moviesexample.jvm.retrofit")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -44,6 +47,11 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.feature.detail)
     implementation(projects.feature.home)
+
+    implementation(libs.firebase.analytics)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+
     // Navigation
     implementation(libs.androidx.navigation.compose)
 }
