@@ -12,8 +12,7 @@ plugins {
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.kover)
     alias(libs.plugins.detekt) apply false
-
-
+    alias(libs.plugins.sonarqube)
 }
 dependencies {
     kover(project(":app"))
@@ -44,5 +43,14 @@ kover {
                 annotatedBy("*Generated*")
             }
         }
+    }
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "alejandrobodichon_movies-android-sample")
+        property("sonar.organization", "alejandrobodichon")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/kover/report.xml")
     }
 }
