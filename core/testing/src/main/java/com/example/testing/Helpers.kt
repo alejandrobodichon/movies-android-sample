@@ -16,4 +16,4 @@ fun sampleMovie(id: Int) = Movie(
     favorite = false
 )
 
-fun sampleMovies(vararg ids: Int ) = ids.map { sampleMovie(it) }
+fun sampleMovies(vararg ids: Int) = ids.map { sampleMovie(it) }

@@ -2,7 +2,6 @@ package com.example.data.mockwebserver
 
 import okhttp3.mockwebserver.MockResponse
 
-
 fun MockResponse.fromJson(jsonFile: String): MockResponse =
     setBody(readJsonFile(jsonFile))
 
