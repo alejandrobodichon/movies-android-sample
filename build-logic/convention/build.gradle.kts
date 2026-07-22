@@ -5,6 +5,7 @@ plugins {
 dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
+    compileOnly(libs.kover.gradlePlugin)
 }
 
 gradlePlugin {
@@ -48,6 +49,10 @@ gradlePlugin {
         register("diLibraryCompose") {
             id = "moviesexample.di.library.compose"
             implementationClass = "DiLibraryComposeConventionPlugin"
+        }
+        register("kover") {
+            id = "moviesexample.kover"
+            implementationClass = "KoverConventionPlugin"
         }
     }
 }

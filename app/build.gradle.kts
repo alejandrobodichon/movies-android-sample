@@ -7,6 +7,7 @@ plugins {
     id("moviesexample.android.room")
     id("moviesexample.jvm.retrofit")
     id("com.google.firebase.crashlytics")
+    id("moviesexample.kover")
 }
 
 android {

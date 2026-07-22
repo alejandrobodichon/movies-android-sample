@@ -5,6 +5,7 @@ plugins {
     id("moviesexample.di.library")
     id("moviesexample.android.room")
     id("moviesexample.jvm.retrofit")
+    id("moviesexample.kover")
 }
 
 android {

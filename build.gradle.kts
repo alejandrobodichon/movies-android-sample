@@ -10,4 +10,37 @@ plugins {
     alias(libs.plugins.kotlinxSerialization) apply false
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
+    alias(libs.plugins.kover)
+
+}
+dependencies {
+    kover(project(":app"))
+    kover(project(":core:data"))
+    kover(project(":core:domain"))
+    kover(project(":core:ui"))
+    kover(project(":feature:detail"))
+    kover(project(":feature:home"))
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                classes(
+                    "*_Factory",
+                    "*_Factory\$*",
+                    "*_HiltModules*",
+                    "*_HiltComponents*",
+                    "*_Impl",
+                    "*.BuildConfig",
+                    "*Hilt_*",
+                    "hilt_aggregated_deps.*",
+                    "dagger.hilt.*",
+                    "*_MembersInjector",
+                    "*.databinding.*",
+                )
+                annotatedBy("*Generated*")
+            }
+        }
+    }
 }

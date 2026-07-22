@@ -1,6 +1,7 @@
 plugins {
     id("moviesexample.android.feature")
     id("moviesexample.di.library.compose")
+    id("moviesexample.kover")
 }
 
 android {
