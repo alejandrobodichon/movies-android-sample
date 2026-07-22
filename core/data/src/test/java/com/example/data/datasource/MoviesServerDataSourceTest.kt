@@ -4,24 +4,19 @@ import com.example.data.mockwebserver.MockWebServerRule
 import com.example.data.mockwebserver.fromJson
 import com.example.data.remote.MoviesServerDataSource
 import com.example.data.remote.MoviesService
-import com.example.data.remote.RemoteMovie
-import com.example.data.remote.RemoteResult
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import jakarta.inject.Inject
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
@@ -57,7 +52,7 @@ class MoviesServerDataSourceTest {
     @Test
     fun `getPopularMovies parses poster path from response`() = runTest {
         // Given
-       enqueue("popular_movies_poster.json")
+        enqueue("popular_movies_poster.json")
 
         // When
         val result = moviesService.getPopularMovies("US")
@@ -160,4 +155,3 @@ class MoviesServerDataSourceTest {
         assertEquals("Original Title 7", result.originalTitle)
     }
 }
-

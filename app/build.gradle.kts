@@ -8,6 +8,7 @@ plugins {
     id("moviesexample.jvm.retrofit")
     id("com.google.firebase.crashlytics")
     id("moviesexample.kover")
+    id("moviesexample.detekt")
 }
 
 android {

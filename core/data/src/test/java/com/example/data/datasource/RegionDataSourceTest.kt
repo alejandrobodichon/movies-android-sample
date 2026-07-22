@@ -15,7 +15,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.whenever
 
-class RegionRepositoryTest {
+class RegionDataSourceTest {
 
     lateinit var geoCoderRegionDataSource: RegionDataSource
 
@@ -23,27 +23,27 @@ class RegionRepositoryTest {
     lateinit var fusedLocationDataSource: LocationDataSource
 
     @Mock
-    lateinit var geocoder:  GeocoderDataSource
+    lateinit var geocoder: GeocoderDataSource
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        geoCoderRegionDataSource = RegionDataSourceImpl(geocoder,fusedLocationDataSource)
+        geoCoderRegionDataSource = RegionDataSourceImpl(geocoder, fusedLocationDataSource)
     }
 
     @Test
     fun `Find last region returns default when geocoder returns empty`() = runTest {
-        //Before
+        // Before
         val address = mock<Address>()
         whenever(address.countryCode).doReturn("AR")
-        whenever(fusedLocationDataSource.findLastLocation()).doReturn(Location(0.0,0.0))
-        whenever(geocoder.getFromLocation(any(),any(),any()))
+        whenever(fusedLocationDataSource.findLastLocation()).doReturn(Location(0.0, 0.0))
+        whenever(geocoder.getFromLocation(any(), any(), any()))
             .doReturn(listOf(address))
 
-        //When
+        // When
         val result: String = geoCoderRegionDataSource.findLastRegion()
 
-        //Then
+        // Then
         assertEquals("AR", result)
 
     }

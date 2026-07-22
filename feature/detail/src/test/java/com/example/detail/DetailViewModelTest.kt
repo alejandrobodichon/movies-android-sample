@@ -64,7 +64,7 @@ class DetailViewModelTest {
 
         vm.favoriteState.test {
             assertFalse(awaitItem()) // initialValue = false
-            assertTrue(awaitItem())  // movie.favorite = true
+            assertTrue(awaitItem()) // movie.favorite = true
             cancelAndIgnoreRemainingEvents()
         }
     }

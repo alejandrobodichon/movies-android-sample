@@ -10,13 +10,13 @@ import javax.inject.Inject
 class MoviesRoomDataSource @Inject constructor(private val moviesDao: MoviesDao) :
     MoviesLocalDataSource {
     override val movies: Flow<List<Movie>> =
-        moviesDao.fetchPopularMovies().map { it.toDomainMovies()}
+        moviesDao.fetchPopularMovies().map { it.toDomainMovies() }
 
     override fun findMovieById(id: Int): Flow<Movie?> =
-        moviesDao.findMovieById(id).map{ it?.toDomainMovie()}
+        moviesDao.findMovieById(id).map { it?.toDomainMovie() }
 
     override suspend fun saveMovies(movies: List<Movie>) =
-        moviesDao.saveMovies(movies.map { it.toDbMovie()})
+        moviesDao.saveMovies(movies.map { it.toDbMovie() })
 
     @Transaction
     override suspend fun updateFavorite(movieId: Int, favorite: Boolean) {
@@ -38,5 +38,4 @@ class MoviesRoomDataSource @Inject constructor(private val moviesDao: MoviesDao)
     )
 }
 
-private fun List<DbMovieWithFavorite>.toDomainMovies(): List<Movie> = map{ it.toDomainMovie() }
-
+private fun List<DbMovieWithFavorite>.toDomainMovies(): List<Movie> = map { it.toDomainMovie() }

@@ -3,14 +3,16 @@ package com.example.data.remote
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class RemoteResult(
     val page: Int,
     val results: List<RemoteMovie>,
-    val total_pages: Int,
-    val total_results: Int
+    @SerialName("total_pages")
+    val totalPages: Int,
+    @SerialName("total_results")
+    val totalResults: Int
 )
+
 @Serializable
 data class RemoteMovie(
     val adult: Boolean,

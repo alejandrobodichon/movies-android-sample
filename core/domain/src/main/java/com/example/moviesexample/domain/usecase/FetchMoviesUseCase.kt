@@ -7,6 +7,6 @@ import javax.inject.Inject
 
 class FetchMoviesUseCase @Inject constructor(
     val repository: IMoviesRepository
-){
+) {
     operator fun invoke(): Flow<List<Movie>> = repository.movies
 }

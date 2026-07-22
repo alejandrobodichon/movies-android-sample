@@ -59,9 +59,10 @@ fun <T> MeScaffold(
     ) { padding ->
         when (state) {
             is Result.Loading -> {
-                Box(Modifier
-                    .fillMaxSize()
-                    .padding(padding),
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(padding),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()

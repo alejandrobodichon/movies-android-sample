@@ -46,14 +46,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import coil.compose.AsyncImage
 import com.example.core.ui.R
-import com.example.moviesexample.domain.entity.AppError
 import com.example.moviesexample.domain.entity.Movie
 import com.example.moviesexample.domain.entity.Result
 import com.example.ui.MeScaffold
 import com.example.ui.PermissionRequestEffect
 import com.example.ui.Screen
 import com.example.ui.toUiText
-import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun HomeScreen(
@@ -79,7 +77,6 @@ fun HomeScreen(
     }
     HomeScreen(onClick, { vm.refresh() }, state, isRefreshing, snackbarHostState)
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -137,7 +134,7 @@ fun MovieItem(movie: Movie, onClick: (Movie) -> Unit) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(2 / 3f)
+                .aspectRatio(MOVIE_POSTER_ASPECT_RATIO)
                 .clip(MaterialTheme.shapes.medium)
         ) {
             AsyncImage(
@@ -154,10 +151,10 @@ fun MovieItem(movie: Movie, onClick: (Movie) -> Unit) {
                     .size(14.dp),
                 tint = MaterialTheme.colorScheme.inverseOnSurface,
                 imageVector =
-                    if (movie.favorite)
-                        Icons.Default.Favorite
-                    else
-                        Icons.Default.FavoriteBorder,
+                if (movie.favorite)
+                    Icons.Default.Favorite
+                else
+                    Icons.Default.FavoriteBorder,
                 contentDescription = null
             )
         }
@@ -172,4 +169,4 @@ fun MovieItem(movie: Movie, onClick: (Movie) -> Unit) {
     }
 }
 
-
+private const val MOVIE_POSTER_ASPECT_RATIO = 2 / 3f

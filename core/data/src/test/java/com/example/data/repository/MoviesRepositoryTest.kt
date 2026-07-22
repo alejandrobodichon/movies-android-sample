@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import org.mockito.MockitoAnnotations
 
-
 class MoviesRepositoryTest {
 
     @Mock
@@ -48,22 +47,22 @@ class MoviesRepositoryTest {
 
     private suspend fun mockFindByIdDataSources(localMovie: Movie? = null, remoteMovie: Movie? = null) {
         whenever(localDataSource.findMovieById(any())).doReturn(flowOf(localMovie))
-        if(remoteMovie!=null){
+        if (remoteMovie != null) {
             whenever(remoteDataSource.findMovieById(any())).doReturn(remoteMovie)
-            }
+        }
         repository = MoviesRepository(remoteDataSource, regionDataSource, localDataSource)
     }
 
     @Test
     fun `Popular movies are taken from local data source if available`() = runTest {
-        //Before
-        val movies = sampleMovies(1,2)
+        // Before
+        val movies = sampleMovies(1, 2)
         mockFetchDataSources(localMovies = movies)
 
-        //When
+        // When
         val result = repository.movies
 
-        //Then
+        // Then
         verify(remoteDataSource, times(0)).fetchPopularMovies(any())
         assertEquals(movies, result.first())
 
@@ -71,43 +70,43 @@ class MoviesRepositoryTest {
 
     @Test
     fun `Popular movies are taken from remote data source `() = runTest {
-        //Before
-        val movies = sampleMovies(1,2)
+        // Before
+        val movies = sampleMovies(1, 2)
         whenever(regionDataSource.findLastRegion()).doReturn("US")
         mockFetchDataSources(remoteMovies = movies)
 
-        //When
+        // When
         repository.movies.first()
 
-        //Then
+        // Then
         verify(remoteDataSource, times(1)).fetchPopularMovies(any())
         verify(localDataSource).saveMovies(movies)
     }
 
     @Test
     fun `Find movie by Id taken from local data source `() = runTest {
-        //Before
+        // Before
         val movie = sampleMovie(1)
         mockFindByIdDataSources(localMovie = movie)
 
-        //When
+        // When
         val result = repository.findMovieById(1).first()
 
-        //Then
+        // Then
         verify(remoteDataSource, times(0)).findMovieById(any())
         assertEquals(result, movie)
     }
 
     @Test
     fun `Find movie by Id taken from remote data source `() = runTest {
-        //Before
+        // Before
         val movie = sampleMovie(1)
         mockFindByIdDataSources(remoteMovie = movie)
 
-        //When
+        // When
         repository.findMovieById(1).collect()
 
-        //Then
+        // Then
         verify(remoteDataSource, times(1)).findMovieById(any())
         verify(localDataSource, times(1)).saveMovies(listOf(movie))
         verify(localDataSource).saveMovies(listOf(movie))
@@ -115,12 +114,12 @@ class MoviesRepositoryTest {
 
     @Test
     fun `Toggle favorite updates local data source`() = runTest {
-        //Before
+        // Before
         val movie = sampleMovie(1)
         mockFindByIdDataSources(localMovie = movie)
-        //When
+        // When
         repository.toggleFavorite(movie.id, movie.favorite)
-        //Then
+        // Then
         verify(localDataSource).updateFavorite(movie.id, !movie.favorite)
     }
 

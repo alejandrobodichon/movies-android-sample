@@ -31,7 +31,6 @@ fun Navigation() {
     }
 }
 
-
 @Serializable
 data object HomeRoute
 

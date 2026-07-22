@@ -34,7 +34,7 @@ class DetailViewModel @Inject constructor(
         .map { it.mapResult(Movie::toUiModel) }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
             initialValue = Result.Loading
         )
 
@@ -42,14 +42,17 @@ class DetailViewModel @Inject constructor(
         .map { it.getOrNull()?.favorite ?: false }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
             initialValue = false
         )
 
     fun onFavoriteClick() {
         viewModelScope.launch {
-            toggleFavoriteUseCase(movieId, favoriteState.value )
+            toggleFavoriteUseCase(movieId, favoriteState.value)
         }
     }
 
+    companion object {
+        private const val STOP_TIMEOUT_MILLIS = 5000L
+    }
 }

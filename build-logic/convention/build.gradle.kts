@@ -6,6 +6,7 @@ dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.kover.gradlePlugin)
+    compileOnly(libs.detekt.gradlePlugin)
 }
 
 gradlePlugin {
@@ -53,6 +54,10 @@ gradlePlugin {
         register("kover") {
             id = "moviesexample.kover"
             implementationClass = "KoverConventionPlugin"
+        }
+        register("detekt") {
+            id = "moviesexample.detekt"
+            implementationClass = "DetektConventionPlugin"
         }
     }
 }

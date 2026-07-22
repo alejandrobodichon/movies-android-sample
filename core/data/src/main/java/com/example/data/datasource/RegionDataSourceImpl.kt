@@ -18,9 +18,7 @@ class RegionDataSourceImpl @Inject constructor(
         return addresses.firstOrNull()?.countryCode
     }
 
-    companion object{
+    companion object {
         const val DEFAULT_REGION = "US"
     }
 }
-
-

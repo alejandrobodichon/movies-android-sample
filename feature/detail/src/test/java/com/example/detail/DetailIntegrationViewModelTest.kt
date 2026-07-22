@@ -21,7 +21,7 @@ class DetailIntegrationViewModelTest {
     val coroutineTestRule = CoroutinesTestRule(testDispatcher = StandardTestDispatcher())
 
     @Test
-    fun `Data is loaded from local data source when available`() = runTest{
+    fun `Data is loaded from local data source when available`() = runTest {
         val localData = sampleMovies(1, 2, 3)
         val vm = createViewmodelWithFakes(id = 2, localData = localData)
         vm.movieState.test {
@@ -34,7 +34,7 @@ class DetailIntegrationViewModelTest {
     }
 
     @Test
-    fun `Data is loaded from server when local data source is empty`() = runTest{
+    fun `Data is loaded from server when local data source is empty`() = runTest {
         val remoteMovies = sampleMovies(1, 2, 3)
         val vm = createViewmodelWithFakes(id = 2, remoteData = remoteMovies)
         vm.movieState.test {
@@ -47,7 +47,7 @@ class DetailIntegrationViewModelTest {
     }
 
     @Test
-    fun `Toggle favorite updates data source`() = runTest{
+    fun `Toggle favorite updates data source`() = runTest {
         val localMovies = sampleMovies(1, 2, 3)
         val vm = createViewmodelWithFakes(id = 2, localData = localMovies)
         vm.favoriteState.test {
@@ -59,13 +59,13 @@ class DetailIntegrationViewModelTest {
         }
     }
 
-    private fun createViewmodelWithFakes(id: Int = 1, localData: List<Movie> = emptyList(), remoteData: List<Movie> = emptyList()): DetailViewModel{
+    private fun createViewmodelWithFakes(id: Int = 1, localData: List<Movie> = emptyList(), remoteData: List<Movie> = emptyList()): DetailViewModel {
         val moviesRepository = buildMoviesRepository(
             localData = localData,
             remoteData = remoteData
         )
         return DetailViewModel(
-            movieId = id ,
+            movieId = id,
             findMovieByIdUseCase = FindMovieByIdUseCase(moviesRepository),
             toggleFavoriteUseCase = ToggleFavoriteUseCase(moviesRepository)
         )

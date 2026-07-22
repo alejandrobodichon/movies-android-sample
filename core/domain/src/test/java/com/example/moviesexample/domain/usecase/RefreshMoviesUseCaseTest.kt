@@ -10,39 +10,38 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
-
 class RefreshMoviesUseCaseTest {
 
     @Test
     fun `Invoke calls repository refresh and returns its result`(): Unit = runTest {
-        //Before
+        // Before
         val result = Result.Success(Unit)
         val repository = mock<IMoviesRepository> {
             onBlocking { refresh() } doReturn result
         }
         val useCase = RefreshMoviesUseCase(repository)
 
-        //When
+        // When
         val actual = useCase()
 
-        //Then
+        // Then
         verify(repository).refresh()
         assertEquals(result, actual)
     }
 
     @Test
     fun `Invoke returns error result when repository refresh fails`(): Unit = runTest {
-        //Before
+        // Before
         val error = Result.Error(AppError.Network.ServerError)
         val repository = mock<IMoviesRepository> {
             onBlocking { refresh() } doReturn error
         }
         val useCase = RefreshMoviesUseCase(repository)
 
-        //When
+        // When
         val actual = useCase()
 
-        //Then
+        // Then
         verify(repository).refresh()
         assertEquals(error, actual)
     }

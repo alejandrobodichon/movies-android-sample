@@ -20,7 +20,7 @@ class HomeIntegrationViewModelTest {
     val coroutineTestRule = CoroutinesTestRule(testDispatcher = StandardTestDispatcher())
 
     @Test
-    fun `Data is loaded form server when local data source is empty`() = runTest{
+    fun `Data is loaded form server when local data source is empty`() = runTest {
         val remoteData = sampleMovies(1, 2, 3)
         val vm = createViewmodelWithFakes(remoteData = remoteData)
 
@@ -29,12 +29,12 @@ class HomeIntegrationViewModelTest {
         vm.state.test {
             assertEquals(Result.Loading, awaitItem())
             assertEquals(Result.Success(emptyList<Movie>()), awaitItem())
-            assertEquals(Result.Success(remoteData),awaitItem())
+            assertEquals(Result.Success(remoteData), awaitItem())
         }
     }
 
     @Test
-    fun `Data is loaded form local source`() = runTest{
+    fun `Data is loaded form local source`() = runTest {
         val localData = sampleMovies(1, 2, 3)
         val vm = createViewmodelWithFakes(localData = localData)
 
@@ -42,11 +42,11 @@ class HomeIntegrationViewModelTest {
 
         vm.state.test {
             assertEquals(Result.Loading, awaitItem())
-            assertEquals(Result.Success(localData),awaitItem())
+            assertEquals(Result.Success(localData), awaitItem())
         }
     }
 
-    private fun createViewmodelWithFakes(localData: List<Movie> = emptyList(), remoteData: List<Movie> = emptyList()): HomeViewModel{
+    private fun createViewmodelWithFakes(localData: List<Movie> = emptyList(), remoteData: List<Movie> = emptyList()): HomeViewModel {
         val moviesRepository = buildMoviesRepository(
             localData = localData,
             remoteData = remoteData

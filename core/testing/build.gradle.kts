@@ -1,6 +1,7 @@
 
 plugins {
     id("moviesexample.jvm.library")
+    id("moviesexample.detekt")
 }
 listOf(
     "assembleDebug",

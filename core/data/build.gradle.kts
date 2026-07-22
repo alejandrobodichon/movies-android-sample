@@ -6,6 +6,7 @@ plugins {
     id("moviesexample.android.room")
     id("moviesexample.jvm.retrofit")
     id("moviesexample.kover")
+    id("moviesexample.detekt")
 }
 
 android {

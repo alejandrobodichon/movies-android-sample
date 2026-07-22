@@ -43,7 +43,6 @@ import com.example.ui.Screen
 import com.example.moviesexample.domain.entity.Result
 import com.example.ui.model.MovieUiModel
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
@@ -115,14 +114,14 @@ private fun MovieDetail(
             modifier = Modifier
                 .testTag("Backdrop")
                 .fillMaxWidth()
-                .aspectRatio(2 / 3f)
+                .aspectRatio(MOVIE_POSTER_ASPECT_RATIO)
                 .clip(MaterialTheme.shapes.medium)
         )
         Text(
             modifier = Modifier
                 .testTag("DetailTitle")
                 .fillMaxWidth()
-                .padding( 16.dp),
+                .padding(16.dp),
             textAlign = TextAlign.Start,
             text = movie.overview
         )
@@ -131,24 +130,26 @@ private fun MovieDetail(
                 .testTag("DetailDescription")
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.secondaryContainer)
-                .padding( 16.dp),
+                .padding(16.dp),
             text = buildAnnotatedString {
                 Property("Original language", movie.originalLanguage)
                 Property("Original title", movie.originalTitle)
                 Property("Release date", movie.releaseDate)
                 Property("Popularity", movie.popularity.toString())
                 Property("Vote average", movie.voteAverage.toString(), true)
-            })
+            }
+        )
     }
 }
 
 @Composable
 private fun FavoriteButton(
-    isFavorite:  Boolean,
+    isFavorite: Boolean,
     onClick: () -> Unit
 ) {
     FloatingActionButton(modifier = Modifier.testTag("FloatingActionButton"), onClick = onClick) {
-        Icon(modifier = Modifier.testTag("FavIcon"),
+        Icon(
+            modifier = Modifier.testTag("FavIcon"),
             imageVector = if (isFavorite)
                 Icons.Default.Favorite
             else
@@ -159,15 +160,17 @@ private fun FavoriteButton(
 }
 
 @Composable
-private fun AnnotatedString.Builder.Property(name: String, value: String, end: Boolean = false){
-    withStyle(ParagraphStyle(lineHeight = 18.sp)){
-        withStyle(SpanStyle(fontWeight = FontWeight.Bold)){
+private fun AnnotatedString.Builder.Property(name: String, value: String, end: Boolean = false) {
+    withStyle(ParagraphStyle(lineHeight = 18.sp)) {
+        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
             append("$name: ")
         }
         append(value)
-        if(!end){
+        if (!end) {
             appendLine()
         }
     }
 
 }
+
+private const val MOVIE_POSTER_ASPECT_RATIO = 2 / 3f

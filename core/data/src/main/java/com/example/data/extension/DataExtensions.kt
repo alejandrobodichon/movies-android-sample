@@ -34,14 +34,16 @@ fun <T> Flow<T>.stateAsResultIn(scope: CoroutineScope): StateFlow<Result<T>> =
     asResult()
         .stateIn(
             scope = scope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
             initialValue = Result.Loading
-    )
+        )
 
 fun <T> Result<T>.getOrNull(): T? = (this as? Result.Success)?.data
 
 inline fun <T, R> Result<T>.mapResult(transform: (T) -> R): Result<R> = when (this) {
     is Result.Success -> Result.Success(transform(data))
-    is Result.Error   -> Result.Error(appError)
-    Result.Loading    -> Result.Loading
+    is Result.Error -> Result.Error(appError)
+    Result.Loading -> Result.Loading
 }
+
+private const val STOP_TIMEOUT_MILLIS = 5000L

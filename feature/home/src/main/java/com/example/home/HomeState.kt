@@ -6,13 +6,13 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 class HomeState(val scrollBehavior: TopAppBarScrollBehavior)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun rememberHomeState(scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-): HomeState{
+fun rememberHomeState(
+    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+): HomeState {
     return remember { HomeState(scrollBehavior) }
 }

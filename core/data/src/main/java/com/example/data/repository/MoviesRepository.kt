@@ -32,6 +32,7 @@ class MoviesRepository @Inject constructor(
         localDataSource.saveMovies(remoteMovies)
     }
 
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun refresh(): Result<Unit> = try {
         requestFromRemote()
         Result.Success(Unit)

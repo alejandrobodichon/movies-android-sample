@@ -1,6 +1,5 @@
 package com.example.moviesexample.domain.usecase
 
-import com.example.moviesexample.domain.entity.Movie
 import com.example.moviesexample.domain.repository.IMoviesRepository
 import javax.inject.Inject
 

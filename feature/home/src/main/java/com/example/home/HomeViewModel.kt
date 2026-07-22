@@ -23,9 +23,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(fetchMoviesUseCase: FetchMoviesUseCase,
+class HomeViewModel @Inject constructor(
+    fetchMoviesUseCase: FetchMoviesUseCase,
     val refreshMoviesUseCase: RefreshMoviesUseCase,
-): ViewModel(){
+): ViewModel() {
 
     private var uiReady = MutableStateFlow(false)
 
@@ -40,7 +41,7 @@ class HomeViewModel @Inject constructor(fetchMoviesUseCase: FetchMoviesUseCase,
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val state: StateFlow<Result<List<Movie>>> = uiReady
-        .filter{ it }
+        .filter { it }
         .flatMapLatest { fetchMoviesUseCase() }
         .stateAsResultIn(scope = viewModelScope)
 

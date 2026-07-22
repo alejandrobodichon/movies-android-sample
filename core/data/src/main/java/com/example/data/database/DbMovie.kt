@@ -2,8 +2,6 @@ package com.example.data.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.moviesexample.domain.entity.Movie
-
 
 @Entity(tableName = "movies")
 data class DbMovie(

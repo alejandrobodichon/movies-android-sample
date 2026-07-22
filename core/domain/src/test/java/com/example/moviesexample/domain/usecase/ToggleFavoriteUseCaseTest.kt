@@ -7,19 +7,18 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.verify
 
-
 class ToggleFavoriteUseCaseTest {
     @Test
-    fun `Invoke calls repository`(): Unit = runTest{
-        //Before
+    fun `Invoke calls repository`(): Unit = runTest {
+        // Before
         val movie = sampleMovie(1)
         val repository = mock(IMoviesRepository::class.java)
         val useCase = ToggleFavoriteUseCase(repository)
 
-        //When
+        // When
         useCase(movie.id, movie.favorite)
 
-        //Then
+        // Then
         verify(repository).toggleFavorite(movie.id, movie.favorite)
     }
 }

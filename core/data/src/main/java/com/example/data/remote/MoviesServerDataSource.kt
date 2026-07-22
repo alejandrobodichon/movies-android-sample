@@ -12,7 +12,7 @@ class MoviesServerDataSource @Inject constructor(
         val movies = moviesService
             .getPopularMovies(findLastRegion)
             .results
-            .map{it.toDomainModel()}
+            .map { it.toDomainModel() }
         return movies
     }
 
