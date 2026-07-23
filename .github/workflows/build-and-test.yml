@@ -17,7 +17,7 @@ jobs:
       - uses: ./.github/actions/setup
         with:
           tmdb-api-key: ${{ secrets.TMDB_API_KEY }}
-          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON }}
       - name: Run Detekt
         run: ./gradlew detekt
       - name: Upload Detekt report
@@ -35,7 +35,7 @@ jobs:
       - uses: ./.github/actions/setup
         with:
           tmdb-api-key: ${{ secrets.TMDB_API_KEY }}
-          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON }}
       - name: Run tests with coverage
         run: ./gradlew test koverXmlReport
       - name: Test summary
@@ -62,7 +62,7 @@ jobs:
       - uses: ./.github/actions/setup
         with:
           tmdb-api-key: ${{ secrets.TMDB_API_KEY }}
-          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON }}
       - name: Cache SonarCloud packages
         uses: actions/cache@v4
         with:
@@ -83,7 +83,7 @@ jobs:
       - uses: ./.github/actions/setup
         with:
           tmdb-api-key: ${{ secrets.TMDB_API_KEY }}
-          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON }}
       - name: Build APK
         run: ./gradlew assembleDebug
       - name: Upload APK
